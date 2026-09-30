@@ -9,7 +9,7 @@
     <meta name="description" content="Bhumlu Bootstrap admin template made using Bootstrap 4, it has tons of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
     <meta name="keywords" content="Bhumlu, bootstrap admin template, bootstrap admin panel, bootstrap 4 admin template, admin template">
     <meta name="author" content="Srthemesvilla" />
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo.png') }}">
 
     <!-- Google fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
@@ -45,14 +45,18 @@
         <div class="layout-inner">
             <!-- [ Layout sidenav ] Start -->
             <div id="layout-sidenav" class="layout-sidenav sidenav sidenav-vertical bg-dark">
-                <div class="app-brand demo">
-                    <span class="app-brand-logo demo">
-                        <img src="{{ asset('assets/img/logo.png') }}" alt="Brand Logo" style="width: 50px; height: 50px; object-fit: contain;" class="img-fluid">
-                    </span>
-                    <a href="{{ route('admin.dashboard') }}" class="app-brand-text demo sidenav-text font-weight-normal ml-2">SMPN 1 Mangunreja</a>
-                    <a href="javascript:" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
-                        {{-- <i class="ion ion-md-menu align-middle"></i> --}}
+                <div class="app-brand demo d-flex align-items-center px-3" style="min-height: 70px;">
+                    <img src="{{ optional($sidebarProfile)->logo ? asset('storage/' . $sidebarProfile->logo) : asset('assets/img/logo.png') }}"
+                        alt="Logo"
+                        style="width: 42px; height: 42px; object-fit: cover; border-radius: 8px; flex-shrink: 0;">
+
+                    <a href="{{ route('admin.dashboard') }}"
+                    class="sidenav-text font-weight-normal ml-3"
+                    style="font-size: 15px; line-height: 1.3; white-space: normal;">
+                        {{ optional($sidebarProfile)->nama_sekolah ?? 'Nama Sekolah' }}
                     </a>
+
+                    <a href="javascript:" class="layout-sidenav-toggle sidenav-link text-large ml-auto"></a>
                 </div>
                 <div class="sidenav-divider mt-0"></div>
 
@@ -77,27 +81,29 @@
 
                     <li class="sidenav-item {{ request()->routeIs('prestasi.*') ? 'active' : '' }}">
                         <a href="{{ route('prestasi.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-box"></i>
+                            <i class="sidenav-icon feather icon-award"></i>
                             <div>Prestasi</div>
                         </a>
                     </li>
 
                     <li class="sidenav-divider mb-1"></li>
-                    <li class="sidenav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
-                        <a href="{{ route('user.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-clipboard"></i>
-                            <div>User</div>
-                        </a>
-                    </li>
+                    @if (Auth::user()->role === 'Admin')
+                        <li class="sidenav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                            <a href="{{ route('user.index') }}" class="sidenav-link">
+                                <i class="sidenav-icon feather icon-clipboard"></i>
+                                <div>User</div>
+                            </a>
+                        </li>
+                    @endif
                     <li class="sidenav-item {{ request()->routeIs('siswa.*') ? 'active' : '' }}">
                         <a href="{{ route('siswa.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-clipboard"></i>
+                            <i class="sidenav-icon feather icon-users"></i>
                             <div>Data Siswa</div>
                         </a>
                     </li>
                     <li class="sidenav-item {{ request()->routeIs('guru.*') ? 'active' : '' }}">
                         <a href="{{ route('guru.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-grid"></i>
+                            <i class="sidenav-icon feather icon-users"></i>
                             <div>Data Guru</div>
                         </a>
                     </li>
@@ -113,19 +119,19 @@
                     <li class="sidenav-divider mb-1"></li>
                     <li class="sidenav-item {{ request()->routeIs('pengumuman.*') ? 'active' : '' }}">
                         <a href="{{ route('pengumuman.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-user"></i>
+                            <i class="sidenav-icon feather icon-bell"></i>
                             <div>Pengumuman</div>
                         </a>
                     </li>
                     <li class="sidenav-item {{ request()->routeIs('berita.*') ? 'active' : '' }}">
                         <a href="{{ route('berita.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-anchor"></i>
+                            <i class="sidenav-icon feather icon-file-text"></i>
                             <div>Berita</div>
                         </a>
                     </li>
                     <li class="sidenav-item {{ request()->routeIs('galeri.*') ? 'active' : '' }}">
                         <a href="{{ route('galeri.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-anchor"></i>
+                            <i class="sidenav-icon feather icon-image"></i>
                             <div>Galeri</div>
                         </a>
                     </li>
@@ -142,7 +148,7 @@
                         <span class="app-brand-logo demo">
                             <img src="{{ asset('assets/img/logo.png') }}" alt="Brand Logo" style="width: 50px; height: 50px; object-fit: contain;" class="img-fluid">
                         </span>
-                        <span class="app-brand-text demo font-weight-normal ml-2">Bhumlu</span>
+                        <span class="app-brand-text demo font-weight-normal ml-2">SMPN 1 Mangunreja</span>
                     </a>
 
                     <div class="layout-sidenav-toggle navbar-nav d-lg-none align-items-lg-center mr-auto">
@@ -163,7 +169,10 @@
                             <div class="demo-navbar-user nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                                     <span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle">
-                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="d-block ui-w-30 rounded-circle">
+                                        @php $fotoNavbar = Auth::user()->profil->foto ?? null; @endphp
+                                        <img src="{{ $fotoNavbar ? asset('storage/' . $fotoNavbar) : asset('assets/img/avatars/1.png') }}"
+                                            alt="Foto" class="d-block ui-w-30 rounded-circle"
+                                            style="width: 30px; height: 30px; object-fit: cover;">
                                         <span class="px-1 mr-lg-2 ml-2 ml-lg-0">{{ Auth::user()->name ?? Auth::user()->username }}</span>
                                     </span>
                                 </a>
@@ -216,9 +225,11 @@
     <script src="{{ asset('assets/libs/chart-am4/animated.js') }}"></script>
 
     <!-- Demo -->
-    <script src="{{ asset('assets/js/demo.js') }}"></script>
-    <script src="assets/js/analytics.js"></script>
-    <script src="{{ asset('assets/js/pages/dashboards_index.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/demo.js') }}"></script>
+    <script src="assets/js/analytics.js"></script> --}}
+    @if (request()->routeIs('admin.dashboard'))
+        <script src="{{ asset('assets/js/pages/dashboards_index.js') }}"></script>
+    @endif
 </body>
 
 </html>

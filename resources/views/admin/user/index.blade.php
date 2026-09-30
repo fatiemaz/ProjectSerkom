@@ -98,9 +98,17 @@
                     <input type="text"
                            name="search"
                            class="form-control bg-transparent border-0"
-                           placeholder="Cari username..."
+                           placeholder="Cari..."
                            value="{{ request('search') }}"
                            style="box-shadow: none;">
+
+                    @if (request()->filled('search'))
+                        <div class="input-group-append">
+                            <a href="{{ route('user.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
+                                <i class="feather icon-x"></i> Reset
+                            </a>
+                        </div>
+                    @endif
 
                 </div>
             </form>
@@ -159,7 +167,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th>Nama</th>
                             <th>Username</th>
                             <th>Role</th>

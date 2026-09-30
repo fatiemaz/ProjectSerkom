@@ -2,6 +2,8 @@
 
 @section('contant')
 
+@php $isAdmin = Auth::user()->role === 'Admin'; @endphp
+
 <div class="container-fluid flex-grow-1 container-p-y">
 
     {{-- JUDUL --}}
@@ -86,16 +88,27 @@
                            placeholder="Cari nama atau NISN..."
                            value="{{ request('search') }}"
                            style="box-shadow: none;">
+
+                    @if (request()->filled('search'))
+                        <div class="input-group-append">
+                            <a href="{{ route('siswa.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
+                                <i class="feather icon-x"></i> Reset
+                            </a>
+                        </div>
+                    @endif
+
                 </div>
             </form>
         </div>
 
         <div class="col-md-4 text-right">
-            <button type="button" class="btn btn-primary"
-                    data-toggle="modal" data-target="#modalTambahSiswa">
-                <i class="feather icon-plus mr-1"></i>
-                TAMBAH SISWA
-            </button>
+            @if ($isAdmin)
+                <button type="button" class="btn btn-primary"
+                        data-toggle="modal" data-target="#modalTambahSiswa">
+                    <i class="feather icon-plus mr-1"></i>
+                    TAMBAH SISWA
+                </button>
+            @endif
         </div>
 
     </div>
@@ -130,12 +143,14 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th>NISN</th>
                             <th>Nama Siswa</th>
                             <th>Jenis Kelamin</th>
                             <th>Tahun Masuk</th>
-                            <th class="text-center" style="width: 130px;">Aksi</th>
+                            @if ($isAdmin)
+                                <th class="text-center" style="width: 130px;">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -162,37 +177,40 @@
 
                                 <td>{{ $siswa->tahun_masuk ?: '-' }}</td>
 
-                                <td>
-                                    <div class="d-flex justify-content-center">
+                                {{-- AKSI (hanya Admin) --}}
+                                @if ($isAdmin)
+                                    <td>
+                                        <div class="d-flex justify-content-center">
 
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-primary mr-2"
-                                                title="Edit Siswa"
-                                                data-toggle="modal"
-                                                data-target="#modalEditSiswa{{ $siswa->id_siswa }}">
-                                            <i class="feather icon-edit-2"></i>
-                                        </button>
-
-                                        <form action="{{ route('siswa.destroy', $siswa->id_siswa) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Yakin ingin menghapus data siswa ini?')">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-outline-danger"
-                                                    title="Hapus Siswa">
-                                                <i class="feather icon-trash-2"></i>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary mr-2"
+                                                    title="Edit Siswa"
+                                                    data-toggle="modal"
+                                                    data-target="#modalEditSiswa{{ $siswa->id_siswa }}">
+                                                <i class="feather icon-edit-2"></i>
                                             </button>
-                                        </form>
 
-                                    </div>
-                                </td>
+                                            <form action="{{ route('siswa.destroy', $siswa->id_siswa) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin ingin menghapus data siswa ini?')">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Hapus Siswa">
+                                                    <i class="feather icon-trash-2"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                @endif
 
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-5">
+                                <td colspan="{{ $isAdmin ? 6 : 5 }}" class="text-center py-5">
                                     <div class="mb-2">
                                         <i class="feather icon-users"
                                            style="font-size: 40px; color: #c8c8c8;"></i>
@@ -218,6 +236,8 @@
 
 </div>
 
+
+@if ($isAdmin)
 
 {{-- MODAL EDIT SISWA (di luar tabel) --}}
 @foreach ($siswas as $siswa)
@@ -408,5 +428,7 @@
         });
     </script>
 @endif
+
+@endif {{-- penutup @if ($isAdmin) --}}
 
 @endsection

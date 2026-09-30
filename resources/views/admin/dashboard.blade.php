@@ -1,565 +1,256 @@
 @extends('admin.index')
+
 @section('contant')
 
-    <!-- [ content ] Start -->
-    <div class="container-fluid flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-0">Dashboard</h4>
-        <div class="text-muted small mt-0 mb-4 d-block breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#"><i class="feather icon-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Library</a></li>
-                <li class="breadcrumb-item active">Data</li>
-            </ol>
-        </div>
-        <div class="row">
-            <!-- 1st row Start -->
-            <div class="col-lg-7">
-                <div class="card mb-4">
-                    <div class="card-header with-elements">
-                        <h6 class="card-header-title mb-0">Statistics</h6>
-                        <div class="card-header-elements ml-auto">
-                            <label class="text m-0">
-                                <span class="text-light text-tiny font-weight-semibold align-middle">SHOW STATS</span>
-                                <span class="switcher switcher-sm d-inline-block align-middle mr-0 ml-2"><input type="checkbox" class="switcher-input" checked><span class="switcher-indicator"><span class="switcher-yes"></span><span
-                                            class="switcher-no"></span></span></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="statistics-chart-1" style="height:270px"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="card mb-4 bg-pattern-2-dark">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="lnr lnr-gift display-4 text-primary"></div>
-                                    <div class="ml-3">
-                                        <div class="text-muted small">Products</div>
-                                        <div class="text-large">985</div>
-                                    </div>
-                                </div>
-                                <div id="ecom-chart-3" class="mt-3 chart-shadow-primary" style="height:40px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-4 bg-pattern-2 bg-primary text-white">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="lnr lnr-cart display-4"></div>
-                                    <div class="ml-3">
-                                        <div class="small">Monthly sales</div>
-                                        <div class="text-large">2362</div>
-                                    </div>
-                                </div>
-                                <div id="order-chart-1" class="mt-3 chart-shadow" style="height:40px"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="card d-flex w-100 mb-4">
-                            <div class="row no-gutters row-bordered row-border-light h-100">
-                                <div class="d-flex col-sm-6 col-md-4 col-lg-6 align-items-center">
-                                    <div class="card-body media align-items-center text-dark">
-                                        <i class="lnr lnr-diamond display-4 d-block text-primary"></i>
-                                        <span class="media-body d-block ml-3"><span class="text-big mr-1 text-primary">$1584.78</span>
-                                            <br>
-                                            <small class="text-muted">Earned this month</small>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="d-flex col-sm-6 col-md-4 col-lg-6 align-items-center">
-                                    <div class="card-body media align-items-center text-dark">
-                                        <i class="lnr lnr-clock display-4 d-block text-primary"></i>
-                                        <span class="media-body d-block ml-3"><span class="text-big"><span class="mr-1 text-primary">152</span>Working Hours</span>
-                                            <br>
-                                            <small class="text-muted">Spent this month</small>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="d-flex col-sm-6 col-md-4 col-lg-6 align-items-center">
-                                    <div class="card-body media align-items-center text-dark">
-                                        <i class="lnr lnr-hourglass display-4 d-block text-primary"></i>
-                                        <span class="media-body d-block ml-3"><span class="text-big"><span class="mr-1 text-primary">54</span> Tasks</span>
-                                            <br>
-                                            <small class="text-muted">Completed this month</small>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="d-flex col-sm-6 col-md-4 col-lg-6 align-items-center">
-                                    <div class="card-body media align-items-center text-dark">
-                                        <i class="lnr lnr-license display-4 d-block text-primary"></i>
-                                        <span class="media-body d-block ml-3"><span class="text-big"><span class="mr-1 text-primary">6</span> Projects</span>
-                                            <br>
-                                            <small class="text-muted">Done this month</small>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 1st row Start -->
-        </div>
-        <div class="row">
-            <!-- 2nd row Start -->
-            <div class="col-md-12">
-                <div class="card d-flex w-100 mb-4">
-                    <div class="row no-gutters row-bordered row-border-light h-100">
-                        <div class="d-flex col-md-6 col-lg-3 align-items-center">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <i class="lnr lnr-earth text-primary display-4"></i>
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0 text-muted">Total <span class="text-primary">Subscription</span></h6>
-                                        <h4 class="mt-3 mb-0">7652<i class="ion ion-md-arrow-round-down ml-3 text-danger"></i></h4>
-                                    </div>
-                                </div>
-                                <p class="mb-0 text-muted">48% From Last 24 Hours</p>
-                            </div>
-                        </div>
-                        <div class="d-flex col-md-6 col-lg-3 align-items-center">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <i class="lnr lnr-cart text-primary display-4"></i>
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0 text-muted"><span class="text-primary">Order</span> Status</h6>
-                                        <h4 class="mt-3 mb-0">6325<i class="ion ion-md-arrow-round-up ml-3 text-success"></i></h4>
-                                    </div>
-                                </div>
-                                <p class="mb-0 text-muted">36% From Last 6 Months</p>
-                            </div>
-                        </div>
-                        <div class="d-flex col-md-6 col-lg-3 align-items-center">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <i class="lnr lnr-users text-primary display-4"></i>
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0 text-muted">Unique <span class="text-primary">Visitors</span></h6>
-                                        <h4 class="mt-3 mb-0">652<i class="ion ion-md-arrow-round-down ml-3 text-danger"></i></h4>
-                                    </div>
-                                </div>
-                                <p class="mb-0 text-muted">36% From Last 6 Months</p>
-                            </div>
-                        </div>
-                        <div class="d-flex col-md-6 col-lg-3 align-items-center">
-                            <div class="card-body">
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">
-                                        <i class="lnr lnr-magic-wand text-primary display-4"></i>
-                                    </div>
-                                    <div class="col">
-                                        <h6 class="mb-0 text-muted">Monthly <span class="text-primary">Earnings</span></h6>
-                                        <h4 class="mt-3 mb-0">5963<i class="ion ion-md-arrow-round-up ml-3 text-success"></i></h4>
-                                    </div>
-                                </div>
-                                <p class="mb-0 text-muted">36% From Last 6 Months</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Staustic card 3 Start -->
-            </div>
-            <!-- 2nd row Start -->
-        </div>
-        <div class="row">
-            <!-- 3rd row Start -->
-            <div class="col-xl-5">
-                <div class="card mb-4">
-                    <div class="card-header with-elements">
-                        <h6 class="card-header-title mb-0">Tasks</h6>
-                        <div class="card-header-elements ml-auto">
-                            <button type="button" class="btn btn-default btn-xs md-btn-flat">Show more</button>
-                        </div>
-                    </div>
-                    <div style="height: 310px" id="tasks-inner">
-                        <div class="card-body">
-                            <p class="text-muted small">Today</p>
-                            <div class="custom-controls-stacked">
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label">Buy products</span>
-                                    <span class="ui-todo-badge badge badge-outline-default font-weight-normal ml-2">58 mins left</span>
-                                </label>
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label">Reply to emails</span>
-                                </label>
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label">Write blog post</span>
-                                    <span class="ui-todo-badge badge badge-outline-default font-weight-normal ml-2">20 hours left</span>
-                                </label>
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" checked>
-                                    <span class="custom-control-label">Wash my car</span>
-                                </label>
-                            </div>
-                        </div>
-                        <hr class="m-0">
-                        <div class="card-body">
-                            <p class="text-muted small">Tomorrow</p>
-                            <div class="custom-controls-stacked">
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label">Buy antivirus</span>
-                                </label>
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label">Jane's Happy Birthday</span>
-                                </label>
-                                <label class="ui-todo-item custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label">Call mom</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Type your task">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary">Add</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-7">
-                <div class="card mb-4">
-                    <div class="card-header with-elements pb-0">
-                        <h6 class="card-header-title mb-0">Customer details</h6>
-                        <div class="card-header-elements ml-auto p-0">
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#sale-stats">Sale stats</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#latest-sales">Latest sales</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="nav-tabs-top">
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="sale-stats">
-                                <div style="height: 330px" id="tab-table-1">
-                                    <table class="table table-hover card-table">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>Due</strong></span>
-                                                    </label>
-                                                </th>
-                                                <th>User</th>
-                                                <th>Description</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>12</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/3-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">John Deo</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1183] Workaround for OS X selects printing bug</h6>
-                                                        <p class="text-muted mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>16</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/1-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">Jems Win</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1249] Vertically center carousel controls</h6>
-                                                        <p class="text-muted mb-0">Try any carousel control and reduce the screen width below...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>40</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/4-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">Jems Wiliiam</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1254] Inaccurate small pagination height</h6>
-                                                        <p class="text-muted mb-0">The height of pagination elements is not consistent with...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>12</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/3-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">John Deo</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1183] Workaround for OS X selects printing bug</h6>
-                                                        <p class="text-muted mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>12</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/3-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">John Deo</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1183] Workaround for OS X selects printing bug</h6>
-                                                        <p class="text-muted mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>16</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/1-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">Jems Win</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1249] Vertically center carousel controls</h6>
-                                                        <p class="text-muted mb-0">Try any carousel control and reduce the screen width below...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>40</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/1-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">Jems Wiliiam</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1254] Inaccurate small pagination height</h6>
-                                                        <p class="text-muted mb-0">The height of pagination elements is not consistent with...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox mb-0">
-                                                        <input type="checkbox" class="custom-control-input">
-                                                        <span class="custom-control-label"><strong>12</strong><br><span>hour</span></span>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <div class="media mb-0">
-                                                        <img src="{{ asset('assets/img/avatars/3-small.png') }}" class="d-block ui-w-40 rounded-circle" alt="">
-                                                        <div class="media-body align-self-center ml-3">
-                                                            <h6 class="mb-0">John Deo</h6>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <h6 class="mb-1">[#1183] Workaround for OS X selects printing bug</h6>
-                                                        <p class="text-muted mb-0">Chrome fixed the bug several versions ago, thus rendering this...</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <a href="javascript:" class="card-footer d-block text-center text-dark small font-weight-semibold">SHOW MORE</a>
-                            </div>
-                            <div class="tab-pane fade" id="latest-sales">
-                                <div style="height: 330px" id="tab-table-2">
-                                    <table class="table table-hover card-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Qty.</th>
-                                                <th>Sum.</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">PlayStation 4 1TB (Jet Black)</a>
-                                                </td>
-                                                <td class="align-middle">1</td>
-                                                <td class="align-middle">$480.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">Nike Men Black Liteforce III Sneakers</a>
-                                                </td>
-                                                <td class="align-middle">2</td>
-                                                <td class="align-middle">$115.1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">Wireless headphones</a>
-                                                </td>
-                                                <td class="align-middle">1</td>
-                                                <td class="align-middle">$235.55</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">HERO ATHLETES BAG</a>
-                                                </td>
-                                                <td class="align-middle">1</td>
-                                                <td class="align-middle">$160.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">POÄNG</a>
-                                                </td>
-                                                <td class="align-middle">3</td>
-                                                <td class="align-middle">$477.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">Apple iWatch (black)</a>
-                                                </td>
-                                                <td class="align-middle">1</td>
-                                                <td class="align-middle">$399.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">WALKING 400 BLUE CAT3</a>
-                                                </td>
-                                                <td class="align-middle">2</td>
-                                                <td class="align-middle">$41.1</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">Wireless headphones</a>
-                                                </td>
-                                                <td class="align-middle">1</td>
-                                                <td class="align-middle">$235.55</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">HERO ATHLETES BAG</a>
-                                                </td>
-                                                <td class="align-middle">1</td>
-                                                <td class="align-middle">$160.00</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <a href="javascript:" class="text-dark">POÄNG</a>
+@php $isAdmin = Auth::user()->role === 'Admin'; @endphp
 
-                                                </td>
-                                                <td class="align-middle">3</td>
-                                                <td class="align-middle">$477.00</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <a href="javascript:" class="card-footer d-block text-center text-dark small font-weight-semibold">SHOW MORE</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div class="container-fluid flex-grow-1 container-p-y">
+
+    <div class="card border-0 mb-4"
+        style="background: linear-gradient(135deg, #23283a 0%, #4a5178 100%); border-radius: 12px;">
+        <div class="card-body d-flex align-items-center justify-content-between py-4 px-4">
+            <div>
+                <h4 class="text-white font-weight-bold mb-1">
+                    Selamat Datang, {{ auth()->user()->name }} ! 👋
+                </h4>
+                <p class="mb-0" style="color: rgba(255,255,255,0.75);">
+                    {{ optional($sidebarProfile ?? null)->nama_sekolah ?? 'Sistem Informasi Sekolah' }}
+                    &middot; {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
+                </p>
             </div>
-            <!-- 3rd row Start -->
+            <i class="feather icon-smile d-none d-md-block"
+            style="font-size: 56px; color: rgba(255,255,255,0.25);"></i>
         </div>
     </div>
-    <!-- [ content ] End -->
 
-    <!-- [ Layout footer ] Start -->
-    <nav class="layout-footer footer bg-white">
-        <div class="container-fluid d-flex flex-wrap justify-content-between text-center container-p-x pb-3">
-            <div class="pt-3">
-                <span class="footer-text font-weight-semibold">&copy; <a href="https://srthemesvilla.com" class="footer-link" target="_blank">Srthemesvilla</a></span>
-            </div>
-            <div>
-                <a href="javascript:" class="footer-link pt-3">About Us</a>
-                <a href="javascript:" class="footer-link pt-3 ml-4">Help</a>
-                <a href="javascript:" class="footer-link pt-3 ml-4">Contact</a>
-                <a href="javascript:" class="footer-link pt-3 ml-4">Terms &amp; Conditions</a>
+    {{-- PESAN --}}
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+            <i class="feather icon-alert-circle mr-2"></i>
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+            <i class="feather icon-check-circle mr-2"></i>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- JUDUL --}}
+    <div class="row">
+        <div class="col-12">
+            <h4 class="font-weight-bold mb-4">Dashboard</h4>
+        </div>
+    </div>
+
+    {{-- KARTU STATISTIK --}}
+    <div class="row">
+
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body position-relative">
+                    <span class="text-muted small">Total Siswa</span>
+                    <div class="d-flex align-items-center mt-1">
+                        <h3 class="mb-0 font-weight-bold">{{ $totalSiswa }}</h3>
+                    </div>
+                    <div class="position-absolute"
+                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                display: flex; align-items: center; justify-content: center;
+                                background: rgba(114, 103, 239, 0.10);">
+                        <i class="feather icon-users" style="font-size: 22px; color: #7267ef;"></i>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-    <!-- [ Layout footer ] End -->
+
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body position-relative">
+                    <span class="text-muted small">Total Guru</span>
+                    <div class="d-flex align-items-center mt-1">
+                        <h3 class="mb-0 font-weight-bold">{{ $totalGuru }}</h3>
+                    </div>
+                    <div class="position-absolute"
+                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                display: flex; align-items: center; justify-content: center;
+                                background: rgba(0, 188, 212, 0.10);">
+                        <i class="feather icon-user-check" style="font-size: 22px; color: #00bcd4;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if ($isAdmin)
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body position-relative">
+                        <span class="text-muted small">Total User</span>
+                        <div class="d-flex align-items-center mt-1">
+                            <h3 class="mb-0 font-weight-bold">{{ $totalUser }}</h3>
+                        </div>
+                        <div class="position-absolute"
+                             style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                    display: flex; align-items: center; justify-content: center;
+                                    background: rgba(255, 82, 82, 0.10);">
+                            <i class="feather icon-shield" style="font-size: 22px; color: #ff5252;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body position-relative">
+                    <span class="text-muted small">Total Berita</span>
+                    <div class="d-flex align-items-center mt-1">
+                        <h3 class="mb-0 font-weight-bold">{{ $totalBerita }}</h3>
+                    </div>
+                    <div class="position-absolute"
+                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                display: flex; align-items: center; justify-content: center;
+                                background: rgba(255, 159, 67, 0.10);">
+                        <i class="feather icon-file-text" style="font-size: 22px; color: #ff9f43;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body position-relative">
+                    <span class="text-muted small">Total Pengumuman</span>
+                    <div class="d-flex align-items-center mt-1">
+                        <h3 class="mb-0 font-weight-bold">{{ $totalPengumuman }}</h3>
+                    </div>
+                    <div class="position-absolute"
+                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                display: flex; align-items: center; justify-content: center;
+                                background: rgba(40, 199, 111, 0.10);">
+                        <i class="feather icon-bell" style="font-size: 22px; color: #28c76f;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body position-relative">
+                    <span class="text-muted small">Total Prestasi</span>
+                    <div class="d-flex align-items-center mt-1">
+                        <h3 class="mb-0 font-weight-bold">{{ $totalPrestasi }}</h3>
+                    </div>
+                    <div class="position-absolute"
+                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                display: flex; align-items: center; justify-content: center;
+                                background: rgba(114, 103, 239, 0.10);">
+                        <i class="feather icon-award" style="font-size: 22px; color: #7267ef;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body position-relative">
+                    <span class="text-muted small">Total Ekstrakurikuler</span>
+                    <div class="d-flex align-items-center mt-1">
+                        <h3 class="mb-0 font-weight-bold">{{ $totalEkskul }}</h3>
+                    </div>
+                    <div class="position-absolute"
+                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                display: flex; align-items: center; justify-content: center;
+                                background: rgba(0, 188, 212, 0.10);">
+                        <i class="feather icon-feather" style="font-size: 22px; color: #00bcd4;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{-- PENGUMUMAN TERBARU + BERITA TERBARU --}}
+    <div class="row">
+
+        {{-- PENGUMUMAN TERBARU --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Pengumuman Terbaru</h5>
+                    <a href="{{ route('pengumuman.index') }}" class="small">Lihat semua</a>
+                </div>
+
+                <div class="list-group list-group-flush">
+                    @forelse ($pengumumanTerbaru as $pengumuman)
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="font-weight-bold">{{ $pengumuman->judul }}</div>
+                                <small class="text-muted">
+                                    {{ $pengumuman->tanggal ? \Carbon\Carbon::parse($pengumuman->tanggal)->format('d/m/Y') : '' }}
+                                </small>
+                            </div>
+                            @if ($pengumuman->isi)
+                                <div class="text-muted small mt-1">
+                                    {{ \Illuminate\Support\Str::limit($pengumuman->isi, 90) }}
+                                </div>
+                            @endif
+                        </div>
+                    @empty
+                        <div class="list-group-item text-center text-muted py-4">
+                            Belum ada pengumuman.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        {{-- BERITA TERBARU --}}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Berita Terbaru</h5>
+                    <a href="{{ route('berita.index') }}" class="small">Lihat semua</a>
+                </div>
+
+                <div class="list-group list-group-flush">
+                    @forelse ($beritaTerbaru as $berita)
+                        <div class="list-group-item d-flex align-items-center">
+
+                            @if ($berita->gambar)
+                                <img src="{{ asset('storage/' . $berita->gambar) }}" alt="Gambar"
+                                     style="width: 56px; height: 42px; border-radius: 6px; object-fit: cover;"
+                                     class="mr-3">
+                            @else
+                                <div class="mr-3 d-flex align-items-center justify-content-center"
+                                     style="width: 56px; height: 42px; border-radius: 6px;
+                                            background: rgba(114, 103, 239, 0.10);">
+                                    <i class="feather icon-image" style="color: #7267ef;"></i>
+                                </div>
+                            @endif
+
+                            <div>
+                                <div class="font-weight-bold">{{ $berita->judul }}</div>
+                                <small class="text-muted">
+                                    {{ $berita->tanggal ? \Carbon\Carbon::parse($berita->tanggal)->format('d/m/Y') : '' }}
+                                </small>
+                            </div>
+
+                        </div>
+                    @empty
+                        <div class="list-group-item text-center text-muted py-4">
+                            Belum ada berita.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
+
 @endsection

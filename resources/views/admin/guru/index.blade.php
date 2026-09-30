@@ -2,6 +2,8 @@
 
 @section('contant')
 
+@php $isAdmin = Auth::user()->role === 'Admin'; @endphp
+
 <div class="container-fluid flex-grow-1 container-p-y">
 
     {{-- JUDUL --}}
@@ -50,16 +52,27 @@
                            placeholder="Cari nama, NIP, atau mapel..."
                            value="{{ request('search') }}"
                            style="box-shadow: none;">
+
+                    @if (request()->filled('search'))
+                        <div class="input-group-append">
+                            <a href="{{ route('guru.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
+                                <i class="feather icon-x"></i> Reset
+                            </a>
+                        </div>
+                    @endif
+
                 </div>
             </form>
         </div>
 
         <div class="col-md-4 text-right">
-            <button type="button" class="btn btn-primary"
-                    data-toggle="modal" data-target="#modalTambahGuru">
-                <i class="feather icon-plus mr-1"></i>
-                TAMBAH GURU
-            </button>
+            @if ($isAdmin)
+                <button type="button" class="btn btn-primary"
+                        data-toggle="modal" data-target="#modalTambahGuru">
+                    <i class="feather icon-plus mr-1"></i>
+                    TAMBAH GURU
+                </button>
+            @endif
         </div>
 
     </div>
@@ -99,7 +112,9 @@
                             <th>Nama Guru</th>
                             <th>NIP</th>
                             <th>Mapel</th>
-                            <th class="text-center" style="width: 130px;">Aksi</th>
+                            @if ($isAdmin)
+                                <th class="text-center" style="width: 130px;">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
 
@@ -129,38 +144,40 @@
                                 <td>{{ $guru->nip ?: '-' }}</td>
                                 <td>{{ $guru->mapel ?: '-' }}</td>
 
-                                {{-- AKSI --}}
-                                <td>
-                                    <div class="d-flex justify-content-center">
+                                {{-- AKSI (hanya Admin) --}}
+                                @if ($isAdmin)
+                                    <td>
+                                        <div class="d-flex justify-content-center">
 
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-primary mr-2"
-                                                title="Edit Guru"
-                                                data-toggle="modal"
-                                                data-target="#modalEditGuru{{ $guru->id_guru }}">
-                                            <i class="feather icon-edit-2"></i>
-                                        </button>
-
-                                        <form action="{{ route('guru.destroy', $guru->id_guru) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Yakin ingin menghapus data guru ini?')">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-outline-danger"
-                                                    title="Hapus Guru">
-                                                <i class="feather icon-trash-2"></i>
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary mr-2"
+                                                    title="Edit Guru"
+                                                    data-toggle="modal"
+                                                    data-target="#modalEditGuru{{ $guru->id_guru }}">
+                                                <i class="feather icon-edit-2"></i>
                                             </button>
-                                        </form>
 
-                                    </div>
-                                </td>
+                                            <form action="{{ route('guru.destroy', $guru->id_guru) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin ingin menghapus data guru ini?')">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Hapus Guru">
+                                                    <i class="feather icon-trash-2"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                @endif
 
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-5">
+                                <td colspan="{{ $isAdmin ? 6 : 5 }}" class="text-center py-5">
                                     <div class="mb-2">
                                         <i class="feather icon-users"
                                            style="font-size: 40px; color: #c8c8c8;"></i>
@@ -187,6 +204,8 @@
 </div>
 
 
+@if ($isAdmin)
+
 {{-- MODAL EDIT GURU (di luar tabel) --}}
 @foreach ($gurus as $guru)
     <div class="modal fade" id="modalEditGuru{{ $guru->id_guru }}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -211,7 +230,7 @@
                         <div class="form-group">
                             <label>Nama Guru</label>
                             <input type="text" name="nama_guru" maxlength="40"
-                                   class="form-control @error('nama_guru') is-invalid @enderror"
+                                   class="form-control {{ old('_guru_id') === $guru->id_guru && $errors->has('nama_guru') ? 'is-invalid' : '' }}"
                                    value="{{ old('_guru_id') === $guru->id_guru ? old('nama_guru') : $guru->nama_guru }}" required>
                             @if (old('_guru_id') === $guru->id_guru)
                                 @error('nama_guru')
@@ -223,7 +242,7 @@
                         <div class="form-group">
                             <label>NIP</label>
                             <input type="text" name="nip" maxlength="15"
-                                   class="form-control @error('nip') is-invalid @enderror"
+                                   class="form-control {{ old('_guru_id') === $guru->id_guru && $errors->has('nip') ? 'is-invalid' : '' }}"
                                    value="{{ old('_guru_id') === $guru->id_guru ? old('nip') : $guru->nip }}">
                             @if (old('_guru_id') === $guru->id_guru)
                                 @error('nip')
@@ -235,7 +254,7 @@
                         <div class="form-group">
                             <label>Mata Pelajaran</label>
                             <input type="text" name="mapel" maxlength="40"
-                                   class="form-control @error('mapel') is-invalid @enderror"
+                                   class="form-control {{ old('_guru_id') === $guru->id_guru && $errors->has('mapel') ? 'is-invalid' : '' }}"
                                    value="{{ old('_guru_id') === $guru->id_guru ? old('mapel') : $guru->mapel }}">
                             @if (old('_guru_id') === $guru->id_guru)
                                 @error('mapel')
@@ -367,5 +386,7 @@
         });
     </script>
 @endif
+
+@endif {{-- penutup @if ($isAdmin) --}}
 
 @endsection

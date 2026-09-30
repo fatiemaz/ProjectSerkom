@@ -11,7 +11,7 @@ class Berita extends Model
 
     protected $table = 'berita';
     protected $primaryKey = 'id_berita';
-    // public $incrementing = true;
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $guarded = [];

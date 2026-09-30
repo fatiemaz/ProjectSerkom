@@ -11,6 +11,7 @@ use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,15 +26,23 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('/', function () {return view('admin.dashboard');});
 
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::resource('user', UserController::class)->except(['show', 'create', 'edit']);
+    Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::middleware('role:Admin')->group(function () {
+        Route::resource('user', UserController::class)->except(['show', 'create', 'edit']);
+    });
 
     Route::get('/profil-sekolah', [ProfileController::class, 'index'])->name('profil-sekolah.index');
     Route::put('/profil-sekolah', [ProfileController::class, 'update'])->name('profil-sekolah.update');
 
-    Route::resource('guru', GuruController::class)->only(['index', 'store', 'update', 'destroy']);
+    // GURU & SISWA: semua role bisa lihat
+    Route::resource('guru', GuruController::class)->only(['index']);
+    Route::resource('siswa', SiswaController::class)->only(['index']);
 
-    Route::resource('siswa', SiswaController::class)->only(['index', 'store', 'update', 'destroy']);
+     // GURU & SISWA: tambah, edit, hapus hanya Admin
+    Route::middleware('role:Admin')->group(function () {
+        Route::resource('guru', GuruController::class)->only(['store', 'update', 'destroy']);
+        Route::resource('siswa', SiswaController::class)->only(['store', 'update', 'destroy']);
+    });
 
     Route::resource('ekstrakurikuler', EkstrakurikulerController::class)->only(['index', 'store', 'update', 'destroy']);
 
@@ -41,7 +50,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('pengumuman', PengumumanController::class)->only(['index', 'store', 'update', 'destroy']);
 
-    Route::resource('berita', BeritaController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('berita', BeritaController::class)->only(['index', 'store', 'update', 'destroy'])
+    ->parameters(['berita' => 'berita']);
 
     Route::resource('galeri', GaleriController::class)->only(['index', 'store', 'update', 'destroy']);
 

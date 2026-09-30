@@ -48,6 +48,15 @@
                            placeholder="Cari nama ekskul atau pembina..."
                            value="{{ request('search') }}"
                            style="box-shadow: none;">
+
+                    @if (request()->filled('search'))
+                        <div class="input-group-append">
+                            <a href="{{ route('ekstrakurikuler.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
+                                <i class="feather icon-x"></i> Reset
+                            </a>
+                        </div>
+                    @endif
+
                 </div>
             </form>
         </div>

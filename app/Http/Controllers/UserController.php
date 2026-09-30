@@ -13,7 +13,8 @@ class UserController extends Controller
     {
         $users = User::query()
             ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('username', 'like', '%' . $request->search . '%');
+                $query->where('username', 'like', '%' . $request->search . '%')
+                ->orWhere('name', 'like', '%' . $request->search . '%');
             })
             ->orderBy('username')
             ->paginate(10)
