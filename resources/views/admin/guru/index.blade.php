@@ -29,7 +29,7 @@
                          style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
                                 display: flex; align-items: center; justify-content: center;
                                 background: rgba(114, 103, 239, 0.10);">
-                        <i class="feather icon-users" style="font-size: 22px; color: #7267ef;"></i>
+                        <i class="chalkboard-userfeather icon-" style="font-size: 22px; color: #7267ef;"></i>
                     </div>
                 </div>
             </div>
@@ -122,9 +122,7 @@
                         @forelse ($gurus as $guru)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($gurus->currentPage() - 1) * $gurus->perPage()) }}
-                                </td>
+                                <td>{{ $guru->nomor }}</td>
 
                                 {{-- FOTO --}}
                                 <td>

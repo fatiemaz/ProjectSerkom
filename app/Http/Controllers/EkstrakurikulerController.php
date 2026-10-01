@@ -18,7 +18,7 @@ class EkstrakurikulerController extends Controller
                       ->orWhere('pembina', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('nama_ekskul')
+            ->orderBy('nomor')
             ->paginate(10)
             ->withQueryString();
 

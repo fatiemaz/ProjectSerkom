@@ -19,7 +19,7 @@ class PrestasiController extends Controller
                 });
             })
             ->orderByDesc('tahun_ajaran')
-            ->orderBy('nama_prestasi')
+            ->orderBy('nomor')
             ->paginate(10)
             ->withQueryString();
 

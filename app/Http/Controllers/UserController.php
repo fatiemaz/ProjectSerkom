@@ -16,7 +16,7 @@ class UserController extends Controller
                 $query->where('username', 'like', '%' . $request->search . '%')
                 ->orWhere('name', 'like', '%' . $request->search . '%');
             })
-            ->orderBy('username')
+            ->orderBy('nomor')
             ->paginate(10)
             ->withQueryString();
 

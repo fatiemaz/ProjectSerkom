@@ -4,10 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <title>SMPN 1 Mangunreja</title>
 </head>
+
+<style>
+    .bg-all{
+        background: linear-gradient(135deg, #0a2a7a 0%, #1746b8 55%, #0f3494 100%); border-radius: 12px;
+    }
+    .carousel-item img {
+        max-height: 600px;
+        object-fit: cover;
+    }
+</style>
+
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-all">
+        <div class="container">
+            <a class="navbar-brand text-white" href="#">
+                <img src="{{ asset('assets/img/logo.png') }}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                SMPN 1 Mangunreja
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" aria-current="page" href="#">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Profile Sekolah</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Ekstrakurikuler</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Galeri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Berita</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" tabindex="-1" aria-disabled="true">Pengumuman</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -17,25 +63,25 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-            <img src="..." class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
-            </div>
-            </div>
-            <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Second slide label</h5>
-                <p>Some representative placeholder content for the second slide.</p>
-            </div>
+                <img src="{{ asset('assets/img/sekolah2.png') }}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>First slide label</h5>
+                    <p>Some representative placeholder content for the first slide.</p>
+                </div>
             </div>
             <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Third slide label</h5>
-                <p>Some representative placeholder content for the third slide.</p>
+                <img src="{{ asset('assets/img/sekolah2.png') }}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Second slide label</h5>
+                    <p>Some representative placeholder content for the second slide.</p>
+                </div>
             </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/img/sekolah2.png') }}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>Third slide label</h5>
+                    <p>Some representative placeholder content for the third slide.</p>
+                </div>
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
@@ -48,5 +94,6 @@
         </button>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

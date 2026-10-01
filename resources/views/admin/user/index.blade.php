@@ -30,7 +30,7 @@
                          style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
                                 display: flex; align-items: center; justify-content: center;
                                 background: rgba(114, 103, 239, 0.10);">
-                        <i class="feather icon-users" style="font-size: 22px; color: #7267ef;"></i>
+                        <i class="feather icon-user" style="font-size: 22px; color: #7267ef;"></i>
                     </div>
                 </div>
             </div>
@@ -182,9 +182,7 @@
                             <tr>
 
                                 {{-- NOMOR --}}
-                                <td>
-                                    {{ $loop->iteration + (($users->currentPage() - 1) * $users->perPage()) }}
-                                </td>
+                                <td>{{ $siswa->nomor }}</td>
 
                                 {{-- NAMA --}}
                                 <td>{{ $user->name }}</td>

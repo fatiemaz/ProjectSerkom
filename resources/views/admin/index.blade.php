@@ -90,7 +90,7 @@
                     @if (Auth::user()->role === 'Admin')
                         <li class="sidenav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                             <a href="{{ route('user.index') }}" class="sidenav-link">
-                                <i class="sidenav-icon feather icon-clipboard"></i>
+                                <i class="sidenav-icon feather icon-user"></i>
                                 <div>User</div>
                             </a>
                         </li>
@@ -103,7 +103,7 @@
                     </li>
                     <li class="sidenav-item {{ request()->routeIs('guru.*') ? 'active' : '' }}">
                         <a href="{{ route('guru.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-users"></i>
+                            <i class="sidenav-icon feather icon-user-check"></i>
                             <div>Data Guru</div>
                         </a>
                     </li>

@@ -139,7 +139,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th style="width: 100px;">Preview</th>
                             <th>Judul</th>
                             <th>Kategori</th>
@@ -152,9 +152,7 @@
                         @forelse ($galeris as $galeri)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($galeris->currentPage() - 1) * $galeris->perPage()) }}
-                                </td>
+                                <td>{{ $galeri->nomor }}</td>
 
                                 {{-- PREVIEW --}}
                                 <td>

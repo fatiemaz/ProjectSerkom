@@ -19,7 +19,7 @@ class GuruController extends Controller
                       ->orWhere('mapel', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('nama_guru')
+            ->orderBy('nomor')
             ->paginate(10)
             ->withQueryString();
 

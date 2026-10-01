@@ -12,19 +12,24 @@ use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', [AuthController::class, 'showLogin'])->name('login');
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/', [PublicController::class, 'index'])->name('landing');
+Route::get('/berita', [PublicController::class, 'berita'])->name('berita.public');
+Route::get('/ekstrakurikuler', [PublicController::class, 'ekskul'])->name('ekskul.public');
 
 Route::middleware('auth')->group(function () {
 
     // Route::get('/', function () {return view('admin.dashboard');});
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::middleware('role:Admin')->group(function () {

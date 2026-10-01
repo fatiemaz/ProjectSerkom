@@ -158,9 +158,7 @@
                         @forelse ($siswas as $siswa)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($siswas->currentPage() - 1) * $siswas->perPage()) }}
-                                </td>
+                                <td>{{ $siswa->nomor }}</td>
 
                                 <td>{{ $siswa->nisn ?: '-' }}</td>
                                 <td>{{ $siswa->nama_siswa }}</td>

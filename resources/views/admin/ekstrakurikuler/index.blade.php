@@ -101,7 +101,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th style="width: 90px;">Gambar</th>
                             <th>Nama Ekskul</th>
                             <th>Pembina</th>
@@ -114,9 +114,7 @@
                         @forelse ($ekskuls as $ekskul)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($ekskuls->currentPage() - 1) * $ekskuls->perPage()) }}
-                                </td>
+                                <td>{{ $ekskul->nomor }}</td>
 
                                 <td>
                                     @if ($ekskul->gambar)

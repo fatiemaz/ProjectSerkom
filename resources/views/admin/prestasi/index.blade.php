@@ -101,7 +101,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th style="width: 90px;">Foto</th>
                             <th>Nama Prestasi</th>
                             <th>Tahun Ajaran</th>
@@ -114,9 +114,7 @@
                         @forelse ($prestasis as $prestasi)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($prestasis->currentPage() - 1) * $prestasis->perPage()) }}
-                                </td>
+                                <td>{{ $prestasi->nomor }}</td>
 
                                 <td>
                                     @if ($prestasi->foto)

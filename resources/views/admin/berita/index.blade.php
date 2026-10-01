@@ -139,7 +139,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th style="width: 90px;">Gambar</th>
                             <th>Judul</th>
                             <th>Tanggal</th>
@@ -153,9 +153,7 @@
                         @forelse ($beritas as $berita)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($beritas->currentPage() - 1) * $beritas->perPage()) }}
-                                </td>
+                                <td>{{ $berita->nomor }}</td>
 
                                 <td>
                                     @if ($berita->gambar)

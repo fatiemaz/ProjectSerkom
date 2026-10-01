@@ -17,7 +17,7 @@ class SiswaController extends Controller
                       ->orWhere('nisn', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('nama_siswa')
+            ->orderBy('nomor')
             ->paginate(10)
             ->withQueryString();
 

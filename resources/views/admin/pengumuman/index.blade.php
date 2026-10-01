@@ -139,7 +139,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">#</th>
+                            <th style="width: 70px;">ID</th>
                             <th>Judul</th>
                             <th>Tanggal</th>
                             <th>Status</th>
@@ -152,9 +152,7 @@
                         @forelse ($pengumumans as $pengumuman)
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration + (($pengumumans->currentPage() - 1) * $pengumumans->perPage()) }}
-                                </td>
+                                <td>{{ $pengumuman->nomor }}</td>
 
                                 <td>
                                     <div>{{ $pengumuman->judul }}</div>

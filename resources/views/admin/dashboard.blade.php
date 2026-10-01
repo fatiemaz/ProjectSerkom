@@ -2,16 +2,44 @@
 
 @section('contant')
 
-@php $isAdmin = Auth::user()->role === 'Admin'; @endphp
+@php
+    $isAdmin = Auth::user()->role === 'Admin';
+
+    // [label, nilai, ikon, warna, tampil?]
+    $stats = [
+        ['Total Siswa',          $totalSiswa,       'users',      '#7267ef', '114, 103, 239', true],
+        ['Total Guru',           $totalGuru,        'user-check', '#00bcd4', '0, 188, 212',   true],
+        ['Total User',           $totalUser,        'user',     '#ff5252', '255, 82, 82',   $isAdmin],
+        ['Total Berita',         $totalBerita,      'file-text',  '#ff9f43', '255, 159, 67',  true],
+        ['Total Pengumuman',     $totalPengumuman,  'bell',       '#28c76f', '40, 199, 111',  true],
+        ['Total Prestasi',       $totalPrestasi,    'award',      '#7267ef', '114, 103, 239', true],
+        ['Total Ekstrakurikuler',$totalEkskul,      'feather',    '#00bcd4', '0, 188, 212',   true],
+    ];
+@endphp
+
+<style>
+    .wave {
+        display: inline-block;
+        transform-origin: 70% 70%;
+        animation: wave 2s infinite;
+    }
+    @keyframes wave {
+        0%, 60%, 100% { transform: rotate(0deg); }
+        10%, 30%      { transform: rotate(14deg); }
+        20%, 40%      { transform: rotate(-8deg); }
+        50%           { transform: rotate(10deg); }
+    }
+</style>
 
 <div class="container-fluid flex-grow-1 container-p-y">
 
+    {{-- CARD SAPAAN --}}
     <div class="card border-0 mb-4"
-        style="background: linear-gradient(135deg, #23283a 0%, #4a5178 100%); border-radius: 12px;">
+         style="background: linear-gradient(135deg, #0a2a7a 0%, #1746b8 55%, #0f3494 100%); border-radius: 12px;">
         <div class="card-body d-flex align-items-center justify-content-between py-4 px-4">
             <div>
                 <h4 class="text-white font-weight-bold mb-1">
-                    Selamat Datang, {{ auth()->user()->name }} ! 👋
+                    Selamat Datang, {{ auth()->user()->name }}! <span class="wave">👋</span>
                 </h4>
                 <p class="mb-0" style="color: rgba(255,255,255,0.75);">
                     {{ optional($sidebarProfile ?? null)->nama_sekolah ?? 'Sistem Informasi Sekolah' }}
@@ -19,7 +47,7 @@
                 </p>
             </div>
             <i class="feather icon-smile d-none d-md-block"
-            style="font-size: 56px; color: rgba(255,255,255,0.25);"></i>
+               style="font-size: 56px; color: rgba(255,255,255,0.25);"></i>
         </div>
     </div>
 
@@ -43,138 +71,36 @@
     {{-- JUDUL --}}
     <div class="row">
         <div class="col-12">
-            <h4 class="font-weight-bold mb-4">Dashboard</h4>
+            <h4 class="font-weight-bold mb-3">Dashboard</h4>
         </div>
     </div>
 
-    {{-- KARTU STATISTIK --}}
+    {{-- KARTU STATISTIK (kecil) --}}
     <div class="row">
-
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Siswa</span>
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalSiswa }}</h3>
-                    </div>
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(114, 103, 239, 0.10);">
-                        <i class="feather icon-users" style="font-size: 22px; color: #7267ef;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Guru</span>
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalGuru }}</h3>
-                    </div>
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(0, 188, 212, 0.10);">
-                        <i class="feather icon-user-check" style="font-size: 22px; color: #00bcd4;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @if ($isAdmin)
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-body position-relative">
-                        <span class="text-muted small">Total User</span>
-                        <div class="d-flex align-items-center mt-1">
-                            <h3 class="mb-0 font-weight-bold">{{ $totalUser }}</h3>
-                        </div>
-                        <div class="position-absolute"
-                             style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                    display: flex; align-items: center; justify-content: center;
-                                    background: rgba(255, 82, 82, 0.10);">
-                            <i class="feather icon-shield" style="font-size: 22px; color: #ff5252;"></i>
+        @foreach ($stats as [$label, $nilai, $ikon, $warna, $rgb, $tampil])
+            @if ($tampil)
+                <div class="col-xl-3 col-md-4 col-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body position-relative py-3">
+                            <span class="text-muted small">{{ $label }}</span>
+                            <div class="d-flex align-items-center mt-1">
+                                <h4 class="mb-0 font-weight-bold">{{ $nilai }}</h4>
+                            </div>
+                            <div class="position-absolute"
+                                 style="right: 16px; top: 14px; width: 36px; height: 36px; border-radius: 8px;
+                                        display: flex; align-items: center; justify-content: center;
+                                        background: rgba({{ $rgb }}, 0.10);">
+                                <i class="feather icon-{{ $ikon }}" style="font-size: 18px; color: {{ $warna }};"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endif
-
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Berita</span>
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalBerita }}</h3>
-                    </div>
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(255, 159, 67, 0.10);">
-                        <i class="feather icon-file-text" style="font-size: 22px; color: #ff9f43;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Pengumuman</span>
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalPengumuman }}</h3>
-                    </div>
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(40, 199, 111, 0.10);">
-                        <i class="feather icon-bell" style="font-size: 22px; color: #28c76f;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Prestasi</span>
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalPrestasi }}</h3>
-                    </div>
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(114, 103, 239, 0.10);">
-                        <i class="feather icon-award" style="font-size: 22px; color: #7267ef;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Ekstrakurikuler</span>
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalEkskul }}</h3>
-                    </div>
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(0, 188, 212, 0.10);">
-                        <i class="feather icon-feather" style="font-size: 22px; color: #00bcd4;"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+            @endif
+        @endforeach
     </div>
 
     {{-- PENGUMUMAN TERBARU + BERITA TERBARU --}}
-    <div class="row">
+    <div class="row mt-2">
 
         {{-- PENGUMUMAN TERBARU --}}
         <div class="col-lg-6 mb-4">
@@ -249,8 +175,42 @@
             </div>
         </div>
 
+    </div> {{-- tutup row Pengumuman + Berita --}}
+
+    {{-- GRAFIK SISWA PER TAHUN MASUK --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Siswa per Tahun Masuk</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartSiswa" height="70"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-</div>
+</div> {{-- tutup container-fluid --}}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    new Chart(document.getElementById('chartSiswa'), {
+        type: 'bar',
+        data: {
+            labels: @json($chartLabels),
+            datasets: [{
+                label: 'Jumlah Siswa',
+                data: @json($chartData),
+                backgroundColor: '#1746b8',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+    });
+</script>
 
 @endsection
