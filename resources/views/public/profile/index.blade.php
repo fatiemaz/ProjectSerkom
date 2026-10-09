@@ -3,63 +3,54 @@
 @section('title', 'Profil Sekolah - SMPN 1 Mangunreja')
 
 @section('content')
-<div class="bg-primary text-white py-5 mb-5">
-    <div class="container text-center">
-        <h1 class="fw-bold">Profil {{ $profil->nama_sekolah ?? 'SMPN 1 Mangunreja' }}</h1>
-        <p class="lead mb-0">Mengenal lebih dekat visi, misi, dan identitas sekolah kami</p>
+<section class="page-hero">
+    <div class="container">
+        <div class="crumbs"><a href="{{ route('landing') }}">Beranda</a><span>/</span>Profil</div>
+        <h1>Profil {{ $profil->nama_sekolah ?? 'SMPN 1 Mangunreja' }}</h1>
+        <p>Mengenal lebih dekat visi, misi, dan identitas sekolah kami</p>
     </div>
-</div>
+</section>
 
-<div class="container mb-5">
-    <div class="row align-items-center mb-5">
-        <div class="col-lg-6 mb-4 mb-lg-0">
-            @if ($profil?->foto && file_exists(public_path('storage/' . $profil->foto)))
-                <img src="{{ asset('storage/' . $profil->foto) }}" alt="Foto Sekolah" class="img-fluid rounded-4 shadow w-100" style="max-height: 380px; object-fit: cover;">
-            @else
-                <div class="bg-light rounded-4 shadow d-flex align-items-center justify-content-center" style="height: 340px;">
-                    <i class="bi bi-building text-primary fs-1"></i>
-                </div>
-            @endif
-        </div>
-        <div class="col-lg-6">
-            <h2 class="fw-bold text-primary mb-3">{{ $profil->nama_sekolah ?? 'SMPN 1 Mangunreja' }}</h2>
-            <p class="text-secondary fs-5">{{ $profil->deskripsi ?? 'Sekolah menengah pertama pilihan utama yang membentuk generasi unggul, berkarakter, dan berprestasi.' }}</p>
-            <hr class="my-4">
-            <div class="row g-3">
-                <div class="col-sm-6">
-                    <strong>Kepala Sekolah:</strong>
-                    <p class="text-muted mb-0">{{ $profil->kepala_sekolah ?? '-' }}</p>
-                </div>
-                <div class="col-sm-6">
-                    <strong>NPSN:</strong>
-                    <p class="text-muted mb-0">{{ $profil->npsn ?? '-' }}</p>
-                </div>
-                <div class="col-sm-6">
-                    <strong>Tahun Berdiri:</strong>
-                    <p class="text-muted mb-0">{{ $profil->tahun_berdiri ?? '-' }}</p>
-                </div>
-                <div class="col-sm-6">
-                    <strong>Kontak / Telp:</strong>
-                    <p class="text-muted mb-0">{{ $profil->kontak ?? '-' }}</p>
-                </div>
+<section class="sec">
+    <div class="container">
+        <div class="row align-items-center g-5 mb-5">
+            <div class="col-lg-6">
+                @if ($profil?->foto && file_exists(public_path('storage/' . $profil->foto)))
+                    <img src="{{ asset('storage/' . $profil->foto) }}" alt="Foto Sekolah" class="frame-img" style="max-height: 400px;">
+                @else
+                    <div class="thumb-ph frame-img" style="height: 340px;"><i class="bi bi-building" style="font-size:4rem;"></i></div>
+                @endif
+            </div>
+            <div class="col-lg-6">
+                <span class="eyebrow">Tentang Kami</span>
+                <h2 class="sec-title mb-3">{{ $profil->nama_sekolah ?? 'SMPN 1 Mangunreja' }}</h2>
+                <p class="text-secondary lh-lg">{{ $profil->deskripsi ?? 'Sekolah menengah pertama pilihan utama yang membentuk generasi unggul, berkarakter, dan berprestasi.' }}</p>
             </div>
         </div>
-    </div>
 
-    {{-- VISI & MISI --}}
-    <div class="row g-4 mb-5">
-        <div class="col-md-6">
-            <div class="card h-100 border-0 shadow-sm rounded-4 p-4 bg-light">
-                <h4 class="fw-bold text-primary mb-3"><i class="bi bi-eye-fill me-2"></i>Visi Sekolah</h4>
-                <p class="text-secondary fs-5 mb-0">{{ $profil->visi ?? 'Belum diisi.' }}</p>
-            </div>
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-lg-3"><div class="stat-item"><div class="meta">Kepala Sekolah</div><div class="fw-bold fs-5">{{ $profil->kepala_sekolah ?? '-' }}</div></div></div>
+            <div class="col-6 col-lg-3"><div class="stat-item"><div class="meta">NPSN</div><div class="fw-bold fs-5">{{ $profil->npsn ?? '-' }}</div></div></div>
+            <div class="col-6 col-lg-3"><div class="stat-item"><div class="meta">Tahun Berdiri</div><div class="fw-bold fs-5">{{ $profil->tahun_berdiri ?? '-' }}</div></div></div>
+            <div class="col-6 col-lg-3"><div class="stat-item"><div class="meta">Kontak / Telp</div><div class="fw-bold fs-5">{{ $profil->kontak ?? '-' }}</div></div></div>
         </div>
-        <div class="col-md-6">
-            <div class="card h-100 border-0 shadow-sm rounded-4 p-4 bg-light">
-                <h4 class="fw-bold text-primary mb-3"><i class="bi bi-bullseye me-2"></i>Misi Sekolah</h4>
-                <div class="text-secondary fs-6">{!! nl2br(e($profil->misi ?? 'Belum diisi.')) !!}</div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="p-5 rounded-4 h-100 text-white" style="background: var(--navy);">
+                    <i class="bi bi-eye-fill fs-2 text-warning"></i>
+                    <h3 class="fw-bold mt-2 mb-3">Visi Sekolah</h3>
+                    <p class="fs-5 mb-0 opacity-90">{{ $profil->visi ?? 'Belum diisi.' }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="sph-card p-5">
+                    <i class="bi bi-bullseye fs-2" style="color: var(--gold);"></i>
+                    <h3 class="fw-bold text-primary mt-2 mb-3">Misi Sekolah</h3>
+                    <div class="prose">{!! nl2br(e($profil->misi ?? 'Belum diisi.')) !!}</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection

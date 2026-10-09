@@ -125,7 +125,7 @@ class PublicController extends Controller
     {
         $ekskul = Ekstrakurikuler::where((new Ekstrakurikuler)->getKeyName(), $id)->firstOrFail();
         $ekskulLain = Ekstrakurikuler::where((new Ekstrakurikuler)->getKeyName(), '!=', $id)->take(4)->get();
-        return view('public.ekskul.show', compact('ekskul', 'ekskulLain'));
+        return view('public.ekstrakurikuler.show', compact('ekskul', 'ekskulLain'));
     }
 
     public function guruShow($id)

@@ -1,61 +1,56 @@
 @extends('public.template')
 
 @section('content')
-<div class="container py-4 my-3">
-    <div class="row g-4">
-        {{-- Detail Galeri Foto --}}
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm overflow-hidden">
-                @if(!empty($galeri->foto))
-                    <img src="{{ asset('storage/' . $galeri->foto) }}" class="w-100" alt="{{ $galeri->judul }}" style="max-height: 480px; object-fit: cover;">
-                @endif
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center text-muted small mb-2">
-                        <i class="bi bi-calendar3 me-1"></i>
-                        <span>{{ \Carbon\Carbon::parse($galeri->created_at)->translatedFormat('d F Y') }}</span>
-                    </div>
-                    <h3 class="fw-bold text-primary mb-3">{{ $galeri->judul }}</h3>
-                    <hr class="my-3">
-
-                    @if(!empty($galeri->keterangan) || !empty($galeri->deskripsi))
-                        <div class="lh-lg text-muted mb-4">
-                            {!! nl2br(e($galeri->keterangan ?? $galeri->deskripsi)) !!}
-                        </div>
+@php $fotoGaleri = $galeri->file ?? $galeri->foto; @endphp
+<section class="sec">
+    <div class="container">
+        <div class="crumbs text-muted small mb-4"><a href="{{ route('landing') }}" class="text-muted text-decoration-none">Beranda</a> / <a href="{{ route('public.galeri') }}" class="text-muted text-decoration-none">Galeri</a></div>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="sph-card">
+                    @if(!empty($fotoGaleri))
+                        <img src="{{ asset('storage/' . $fotoGaleri) }}" class="w-100" alt="{{ $galeri->judul }}" style="max-height: 480px; object-fit: cover;">
                     @endif
+                    <div class="p-4 p-md-5">
+                        <span class="meta"><i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($galeri->created_at)->translatedFormat('d F Y') }}</span>
+                        <h2 class="fw-bold text-primary my-2">{{ $galeri->judul }}</h2>
 
-                    <div class="pt-3 border-top">
-                        <a href="{{ route('public.galeri') }}" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-arrow-left me-1"></i> Kembali ke Galeri
-                        </a>
+                        @if(!empty($galeri->keterangan) || !empty($galeri->deskripsi))
+                            <div class="prose mt-3 mb-4">{!! nl2br(e($galeri->keterangan ?? $galeri->deskripsi)) !!}</div>
+                        @endif
+
+                        <div class="pt-3 border-top">
+                            <a href="{{ route('public.galeri') }}" class="btn-sph-o btn-sm-pill"><i class="bi bi-arrow-left me-1"></i> Kembali ke Galeri</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Sidebar Galeri Foto Lainnya --}}
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm p-3">
-                <h6 class="fw-bold text-primary mb-3 border-bottom pb-2">Galeri Foto Lainnya</h6>
-                <div class="row g-2">
-                    @forelse($galeriLain as $item)
-                        <div class="col-6">
-                            <a href="{{ route('public.galeri.show', $item) }}" class="d-block text-decoration-none text-dark card-hover rounded overflow-hidden">
-                                @if(!empty($item->foto))
-                                    <img src="{{ asset('storage/' . $item->foto) }}" class="w-100 rounded" style="height: 100px; object-fit: cover;">
-                                @else
-                                    <div class="bg-light border rounded d-flex align-items-center justify-content-center" style="height: 100px;">
-                                        <i class="bi bi-image text-muted fs-3"></i>
+            <div class="col-lg-4">
+                <div class="sph-card p-4">
+                    <h6 class="fw-bold text-primary mb-3 pb-2 border-bottom">Galeri Foto Lainnya</h6>
+                    <div class="row g-2">
+                        @forelse($galeriLain as $item)
+                            @php $fotoItem = $item->file ?? $item->foto; @endphp
+                            <div class="col-6">
+                                <a href="{{ route('public.galeri.show', $item) }}" class="d-block text-decoration-none text-dark">
+                                    <div class="zoom rounded-3" style="height:100px;">
+                                        @if(!empty($fotoItem))
+                                            <img src="{{ asset('storage/' . $fotoItem) }}" alt="">
+                                        @else
+                                            <div class="thumb-ph h-100"><i class="bi bi-image fs-3"></i></div>
+                                        @endif
                                     </div>
-                                @endif
-                                <small class="d-block text-truncate fw-semibold mt-1 px-1">{{ $item->judul }}</small>
-                            </a>
-                        </div>
-                    @empty
-                        <div class="col-12"><small class="text-muted">Belum ada foto lainnya.</small></div>
-                    @endforelse
+                                    <small class="d-block text-truncate fw-semibold mt-1">{{ $item->judul }}</small>
+                                </a>
+                            </div>
+                        @empty
+                            <div class="col-12"><small class="text-muted">Belum ada foto lainnya.</small></div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection
