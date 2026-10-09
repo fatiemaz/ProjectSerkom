@@ -37,7 +37,7 @@ class ProfileController extends Controller
 
         foreach (['foto', 'logo'] as $field) {
             if ($request->hasFile($field)) {
-                if ($profile->{$field}) {
+                if ($profile->{$field} && Storage::disk('public')->exists($profile->{$field})) {
                     Storage::disk('public')->delete($profile->{$field});
                 }
                 $data[$field] = $request->file($field)->store('profile', 'public');

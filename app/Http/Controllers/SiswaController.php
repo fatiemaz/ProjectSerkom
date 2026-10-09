@@ -17,6 +17,9 @@ class SiswaController extends Controller
                       ->orWhere('nisn', 'like', "%{$search}%");
                 });
             })
+            ->when($request->filled('jenis_kelamin'), function ($query) use ($request) {
+                $query->where('jenis_kelamin', $request->jenis_kelamin);
+            })
             ->orderBy('nomor')
             ->paginate(10)
             ->withQueryString();

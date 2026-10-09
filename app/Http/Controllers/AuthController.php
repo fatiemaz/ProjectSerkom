@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -19,7 +21,17 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $user = User::where('username', $credentials['username'])->first();
+
+        if ($user
+            && $user->status !== 'Aktif'
+            && Hash::check($credentials['password'], $user->password)) {
+            return back()
+                ->withInput($request->only('username'))
+                ->withErrors(['username' => 'Akun Anda nonaktif. Hubungi admin.']);
+        }
+
+        if (Auth::attempt($credentials + ['status' => 'Aktif'])) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.dashboard'));

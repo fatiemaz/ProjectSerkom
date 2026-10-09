@@ -37,6 +37,7 @@ class UserController extends Controller
             'username' => 'required|string|max:30|unique:user,username',
             'password' => 'required|string|min:6',
             'role'     => 'required|in:Admin,Operator',
+            'status' => 'required|in:Aktif,Nonaktif',
         ]);
 
         User::create([
@@ -44,6 +45,7 @@ class UserController extends Controller
             'username' => $validated['username'],
             'password' => Hash::make($validated['password']),
             'role'     => $validated['role'],
+            'status'   => $validated['status'],
         ]);
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan.');
@@ -53,13 +55,17 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
+            'name' => 'required|string|max:30',
             'username' => 'required|string|max:30|unique:user,username,' . $user->getKey() . ',' . $user->getKeyName(),
             'password' => 'nullable|string|min:6',
             'role'     => 'required|in:Admin,Operator',
+            'status' => 'required|in:Aktif,Nonaktif',
         ]);
 
+        $user->name = $validated['name'];
         $user->username = $validated['username'];
         $user->role     = $validated['role'];
+        $user->status = $validated['status'];
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
@@ -76,5 +82,18 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus.');
+    }
+
+    // Mengaktifkan / menonaktifkan user
+    public function toggleStatus(User $user)
+    {
+        if ($user->getKey() === auth()->id()) {
+            return back()->with('error', 'Anda tidak bisa mengubah status akun sendiri.');
+        }
+
+        $user->status = $user->status === 'Aktif' ? 'Nonaktif' : 'Aktif';
+        $user->save();
+
+        return back()->with('success', "User {$user->username} sekarang {$user->status}.");
     }
 }

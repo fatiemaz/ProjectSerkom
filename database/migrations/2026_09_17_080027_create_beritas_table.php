@@ -13,16 +13,21 @@ return new class extends Migration
     {
         Schema::create('berita', function (Blueprint $table) {
             $table->uuid('id_berita')->primary();
-            $table->string('judul', 50);
+            $table->string('judul', 150);
+            $table->string('slug', 200)->unique(); // Diubah ke string agar aman untuk unique index
             $table->text('isi')->nullable();
             $table->date('tanggal')->nullable();
-            $table->string('gambar', 100)->nullable();
+            $table->string('gambar', 255)->nullable(); // Diperpanjang untuk menampung path file yang panjang
             $table->enum('status', ['Publish', 'Draft'])->default('Draft');
             $table->uuid('id_user');
             $table->timestamps();
 
-            $table->foreign('id_user')->references('id_user')->on('user')
-                ->onUpdate('cascade')->onDelete('restrict');
+            // Foreign key relasi ke tabel 'user'
+            $table->foreign('id_user')
+                ->references('id_user')
+                ->on('user')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
         });
     }
 

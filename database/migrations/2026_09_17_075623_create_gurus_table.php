@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('nama_guru', 40);
             $table->string('nip', 15)->nullable();
             $table->string('mapel', 40)->nullable();
+            $table->enum('jabatan', ['Guru Mapel', 'Tenaga Kependidikan']);
             $table->string('foto', 100)->nullable();
             $table->timestamps();
         });
-    }
+    }   
 
     /**
      * Reverse the migrations.

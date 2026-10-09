@@ -19,7 +19,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
-
+ 
     public function pengumuman()
     {
         return $this->hasMany(Pengumuman::class, 'id_user', 'id_user');

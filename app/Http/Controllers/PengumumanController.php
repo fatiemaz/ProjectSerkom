@@ -31,6 +31,8 @@ class PengumumanController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['_modal' => 'tambah']);
+
         $validated = $request->validate([
             'judul'   => 'required|string|max:50',
             'isi'     => 'nullable|string',
@@ -38,7 +40,6 @@ class PengumumanController extends Controller
             'status'  => 'required|in:Publish,Draft',
         ]);
 
-        // Pakai user yang login; fallback ke user pertama selama login belum dibuat
         $validated['id_user'] = Auth::id() ?? User::value('id_user');
 
         Pengumuman::create($validated);
@@ -47,8 +48,15 @@ class PengumumanController extends Controller
             ->with('success', 'Pengumuman berhasil ditambahkan.');
     }
 
-    public function update(Request $request, Pengumuman $pengumuman)
+    public function update(Request $request, $id_pengumuman)
     {
+        $pengumuman = Pengumuman::where('id_pengumuman', $id_pengumuman)->firstOrFail();
+
+        $request->merge([
+            '_modal' => 'edit',
+            '_pengumuman_id' => $pengumuman->id_pengumuman
+        ]);
+
         $validated = $request->validate([
             'judul'   => 'required|string|max:50',
             'isi'     => 'nullable|string',
@@ -62,8 +70,9 @@ class PengumumanController extends Controller
             ->with('success', 'Pengumuman berhasil diperbarui.');
     }
 
-    public function destroy(Pengumuman $pengumuman)
+    public function destroy($id_pengumuman)
     {
+        $pengumuman = Pengumuman::where('id_pengumuman', $id_pengumuman)->firstOrFail();
         $pengumuman->delete();
 
         return redirect()->route('pengumuman.index')

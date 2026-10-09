@@ -15,25 +15,35 @@
 
     {{-- CARD STATISTIK --}}
     <div class="row">
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body position-relative">
-                    <span class="text-muted small">Total Guru</span>
+        @php
+            $cards = [
+                ['Total Guru & Staf',     $totalGuru,      'icon-users',     'Orang'],
+                ['Guru Mapel',            $totalGuruMapel, 'icon-book', 'Buku'],
+                ['Tenaga Kependidikan',   $totalTendik,    'icon-briefcase', 'Orang'],
+            ];
+        @endphp
 
-                    <div class="d-flex align-items-center mt-1">
-                        <h3 class="mb-0 font-weight-bold">{{ $totalGuru }}</h3>
-                        <span class="ml-2 text-muted">Guru</span>
-                    </div>
+        @foreach ($cards as [$label, $jumlah, $icon, $satuan])
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body position-relative">
+                        <span class="text-muted small">{{ $label }}</span>
 
-                    <div class="position-absolute"
-                         style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
-                                display: flex; align-items: center; justify-content: center;
-                                background: rgba(114, 103, 239, 0.10);">
-                        <i class="chalkboard-userfeather icon-" style="font-size: 22px; color: #7267ef;"></i>
+                        <div class="d-flex align-items-center mt-1">
+                            <h3 class="mb-0 font-weight-bold">{{ $jumlah }}</h3>
+                            <span class="ml-2 text-muted">{{ $satuan }}</span>
+                        </div>
+
+                        <div class="position-absolute"
+                            style="right: 20px; top: 22px; width: 42px; height: 42px; border-radius: 8px;
+                                    display: flex; align-items: center; justify-content: center;
+                                    background: rgba(114, 103, 239, 0.10);">
+                            <i class="feather {{ $icon }}" style="font-size: 22px; color: #7267ef;"></i>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 
     {{-- SEARCH + TAMBAH --}}
@@ -48,19 +58,27 @@
                         </span>
                     </div>
                     <input type="text" name="search"
-                           class="form-control bg-transparent border-0"
-                           placeholder="Cari nama, NIP, atau mapel..."
-                           value="{{ request('search') }}"
-                           style="box-shadow: none;">
+                        class="form-control bg-transparent border-0"
+                        placeholder="Cari nama, NIP, atau mapel..."
+                        value="{{ request('search') }}"
+                        style="box-shadow: none;">
 
-                    @if (request()->filled('search'))
+                    <select name="jabatan" class="form-control bg-transparent border-0"
+                            style="max-width: 200px; box-shadow: none;"
+                            onchange="this.form.submit()">
+                        <option value="">Semua Jabatan</option>
+                        @foreach (['Guru Mapel', 'Tenaga Kependidikan'] as $j)
+                            <option value="{{ $j }}" {{ request('jabatan') === $j ? 'selected' : '' }}>{{ $j }}</option>
+                        @endforeach
+                    </select>
+
+                    @if (request()->filled('search') || request()->filled('jabatan'))
                         <div class="input-group-append">
                             <a href="{{ route('guru.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
                                 <i class="feather icon-x"></i> Reset
                             </a>
                         </div>
                     @endif
-
                 </div>
             </form>
         </div>
@@ -111,6 +129,7 @@
                             <th style="width: 80px;">Foto</th>
                             <th>Nama Guru</th>
                             <th>NIP</th>
+                            <th>Jabatan</th>
                             <th>Mapel</th>
                             @if ($isAdmin)
                                 <th class="text-center" style="width: 130px;">Aksi</th>
@@ -140,6 +159,13 @@
 
                                 <td>{{ $guru->nama_guru }}</td>
                                 <td>{{ $guru->nip ?: '-' }}</td>
+
+                                <td>
+                                    <span class="badge {{ $guru->jabatan === 'Guru Mapel' ? 'badge-primary' : 'badge-secondary' }}">
+                                        {{ $guru->jabatan }}
+                                    </span>
+                                </td>
+
                                 <td>{{ $guru->mapel ?: '-' }}</td>
 
                                 {{-- AKSI (hanya Admin) --}}
@@ -175,7 +201,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ $isAdmin ? 6 : 5 }}" class="text-center py-5">
+                                <td colspan="{{ $isAdmin ? 7 : 6 }}" class="text-center py-5">
                                     <div class="mb-2">
                                         <i class="feather icon-users"
                                            style="font-size: 40px; color: #c8c8c8;"></i>
@@ -250,6 +276,24 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Jabatan</label>
+                            @php
+                                $jabatanDipilih = old('_guru_id') === $guru->id_guru ? old('jabatan') : $guru->jabatan;
+                            @endphp
+                            <select name="jabatan"
+                                    class="form-control select-jabatan {{ old('_guru_id') === $guru->id_guru && $errors->has('jabatan') ? 'is-invalid' : '' }}" required>
+                                @foreach (['Guru Mapel', 'Tenaga Kependidikan'] as $j)
+                                    <option value="{{ $j }}" {{ $jabatanDipilih === $j ? 'selected' : '' }}>{{ $j }}</option>
+                                @endforeach
+                            </select>
+                            @if (old('_guru_id') === $guru->id_guru)
+                                @error('jabatan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            @endif
+                        </div>
+
+                        <div class="form-group wrap-mapel">
                             <label>Mata Pelajaran</label>
                             <input type="text" name="mapel" maxlength="40"
                                    class="form-control {{ old('_guru_id') === $guru->id_guru && $errors->has('mapel') ? 'is-invalid' : '' }}"
@@ -336,6 +380,23 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Jabatan</label>
+                        <select name="jabatan"
+                                class="form-control select-jabatan {{ old('_modal') === 'tambah' && $errors->has('jabatan') ? 'is-invalid' : '' }}" required>
+                            <option value="">-- Pilih Jabatan --</option>
+                            @foreach (['Guru Mapel', 'Tenaga Kependidikan'] as $j)
+                                <option value="{{ $j }}"
+                                    {{ old('_modal') === 'tambah' && old('jabatan') === $j ? 'selected' : '' }}>{{ $j }}</option>
+                            @endforeach
+                        </select>
+                        @if (old('_modal') === 'tambah')
+                            @error('jabatan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        @endif
+                    </div>
+
+                    <div class="form-group wrap-mapel">
                         <label>Mata Pelajaran</label>
                         <input type="text" name="mapel" maxlength="40"
                                class="form-control {{ old('_modal') === 'tambah' && $errors->has('mapel') ? 'is-invalid' : '' }}"
@@ -372,19 +433,47 @@
 </div>
 
 
-{{-- BUKA ULANG MODAL JIKA VALIDASI GAGAL --}}
-@if ($errors->any())
+    {{-- BUKA ULANG MODAL JIKA VALIDASI GAGAL --}}
+    @if ($errors->any())
+        @push('scripts')
+        <script>
+            $(function () {
+                @if (old('_modal') === 'tambah')
+                    $('#modalTambahGuru').modal('show');
+                @elseif (old('_modal') === 'edit')
+                    $('#modalEditGuru{{ old('_guru_id') }}').modal('show');
+                @endif
+            });
+        </script>
+        @endpush
+    @endif
+
+    {{-- TOGGLE MAPEL --}}
+    @push('scripts')
     <script>
-        $(function () {
-            @if (old('_modal') === 'tambah')
-                $('#modalTambahGuru').modal('show');
-            @elseif (old('_modal') === 'edit')
-                $('#modalEditGuru{{ old('_guru_id') }}').modal('show');
-            @endif
+        document.addEventListener('DOMContentLoaded', function () {
+
+            function toggleMapel(select) {
+                var isTendik = select.value === 'Tenaga Kependidikan';
+                var wrap = select.closest('form').querySelector('.wrap-mapel');
+                if (!wrap) return;
+
+                wrap.style.display = isTendik ? 'none' : '';
+                wrap.querySelectorAll('input').forEach(function (input) {
+                    input.disabled = isTendik;
+                });
+            }
+
+            document.querySelectorAll('.select-jabatan').forEach(function (select) {
+                toggleMapel(select);
+                select.addEventListener('change', function () {
+                    toggleMapel(select);
+                });
+            });
         });
     </script>
-@endif
+    @endpush
 
-@endif {{-- penutup @if ($isAdmin) --}}
+    @endif {{-- penutup @if ($isAdmin) --}}
 
 @endsection

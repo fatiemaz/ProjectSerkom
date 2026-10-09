@@ -324,8 +324,8 @@
 
         {{-- FORM LOGIN --}}
         <div class="card">
-
-            <h2>Sign In</h2>
+ 
+            <h2>LOGIN</h2>
             <div class="sub">Masuk dengan akun admin atau operator</div>
 
             @if ($errors->any())
@@ -369,7 +369,7 @@
 
                 <button type="submit" class="btn-login" id="btnLogin">
                     <span class="spinner"></span>
-                    <span id="btnText">MASUK</span>
+                    <span id="btnText">Login</span>
                 </button>
             </form>
 

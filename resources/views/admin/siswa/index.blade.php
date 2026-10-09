@@ -84,19 +84,26 @@
                         </span>
                     </div>
                     <input type="text" name="search"
-                           class="form-control bg-transparent border-0"
-                           placeholder="Cari nama atau NISN..."
-                           value="{{ request('search') }}"
-                           style="box-shadow: none;">
+                        class="form-control bg-transparent border-0"
+                        placeholder="Cari nama atau NISN..."
+                        value="{{ request('search') }}"
+                        style="box-shadow: none;">
 
-                    @if (request()->filled('search'))
+                    <select name="jenis_kelamin" class="form-control bg-transparent border-0"
+                            style="max-width: 180px; box-shadow: none;"
+                            onchange="this.form.submit()">
+                        <option value="">Semua</option>
+                        <option value="Laki-Laki" {{ request('jenis_kelamin') === 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
+                        <option value="Perempuan" {{ request('jenis_kelamin') === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+
+                    @if (request()->filled('search') || request()->filled('jenis_kelamin'))
                         <div class="input-group-append">
                             <a href="{{ route('siswa.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
                                 <i class="feather icon-x"></i> Reset
                             </a>
                         </div>
                     @endif
-
                 </div>
             </form>
         </div>
@@ -416,6 +423,7 @@
 
 {{-- BUKA ULANG MODAL JIKA VALIDASI GAGAL --}}
 @if ($errors->any())
+    @push('scripts')
     <script>
         $(function () {
             @if (old('_modal') === 'tambah')
@@ -425,6 +433,7 @@
             @endif
         });
     </script>
+    @endpush
 @endif
 
 @endif {{-- penutup @if ($isAdmin) --}}

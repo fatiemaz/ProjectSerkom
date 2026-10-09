@@ -171,6 +171,7 @@
                             <th>Nama</th>
                             <th>Username</th>
                             <th>Role</th>
+                            <th>Status</th>
                             <th class="text-center" style="width: 130px;">Aksi</th>
                         </tr>
                     </thead>
@@ -182,7 +183,7 @@
                             <tr>
 
                                 {{-- NOMOR --}}
-                                <td>{{ $siswa->nomor }}</td>
+                                <td>{{ $user->nomor }}</td>
 
                                 {{-- NAMA --}}
                                 <td>{{ $user->name }}</td>
@@ -213,9 +214,41 @@
                                     @endif
                                 </td>
 
+                                {{-- STATUS --}}
+                                <td>
+                                    @if ($user->status === 'Aktif')
+                                        <span class="badge badge-success">Aktif</span>
+                                    @else
+                                        <span class="badge badge-secondary">Nonaktif</span>
+                                    @endif
+                                </td>
+
                                 {{-- AKSI --}}
                                 <td>
                                     <div class="d-flex justify-content-center">
+
+                                        {{-- AKTIF / NONAKTIF --}}
+                                        <form action="{{ route('user.toggle-status', $user->id_user) }}"
+                                            method="POST"
+                                            class="mr-2"
+                                            onsubmit="return confirm('{{ $user->status === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan' }} user ini?')">
+                                            @csrf
+                                            @method('PATCH')
+
+                                            @if ($user->status === 'Aktif')
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-warning"
+                                                        title="Nonaktifkan User">
+                                                    <i class="feather icon-user-x"></i>
+                                                </button>
+                                            @else
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-success"
+                                                        title="Aktifkan User">
+                                                    <i class="feather icon-user-check"></i>
+                                                </button>
+                                            @endif
+                                        </form>
 
                                         {{-- EDIT (BUKA MODAL) --}}
                                         <button type="button"
@@ -248,7 +281,7 @@
                         @empty
 
                             <tr>
-                                <td colspan="5" class="text-center py-5">
+                                <td colspan="6" class="text-center py-5">
                                     <div class="mb-2">
                                         <i class="feather icon-users"
                                            style="font-size: 40px; color: #c8c8c8;"></i>
@@ -341,6 +374,17 @@
                             @enderror
                         </div>
 
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                <option value="Aktif" {{ old('status', $user->status) === 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                <option value="Nonaktif" {{ old('status', $user->status) === 'Nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
+                            @error('status')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                     </div>
 
                     <div class="modal-footer">
@@ -411,6 +455,17 @@
                             <option value="Operator" {{ old('role') === 'Operator' ? 'selected' : '' }}>Operator</option>
                         </select>
                         @error('role')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                            <option value="Aktif" {{ old('status', 'Aktif') === 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="Nonaktif" {{ old('status') === 'Nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                        </select>
+                        @error('status')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

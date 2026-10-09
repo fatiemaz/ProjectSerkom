@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('prestasi', function (Blueprint $table) {
             $table->uuid('id_prestasi')->primary();
             $table->string('nama_prestasi', 40);
+            $table->string('nama_siswa', 40);
+            $table->string('tingkat', 30)->nullable();
             $table->text('deskripsi')->nullable();
             $table->string('foto', 100)->nullable();
             $table->string('tahun_ajaran', 9)->nullable();

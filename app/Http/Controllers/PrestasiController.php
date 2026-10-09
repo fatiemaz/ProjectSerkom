@@ -32,6 +32,8 @@ class PrestasiController extends Controller
     {
         $validated = $request->validate([
             'nama_prestasi' => 'required|string|max:40',
+            'nama_siswa' => 'required|string|max:40',
+            'tingkat' => 'required|in:Sekolah,Kecamatan,Kabupaten,Provinsi,Nasional,Internasional',
             'deskripsi'     => 'nullable|string',
             'tahun_ajaran'  => ['nullable', 'string', 'max:9', 'regex:/^\d{4}\/\d{4}$/'],
             'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -52,13 +54,15 @@ class PrestasiController extends Controller
     public function update(Request $request, Prestasi $prestasi)
     {
         $validated = $request->validate([
-            'nama_prestasi' => 'required|string|max:40',
-            'deskripsi'     => 'nullable|string',
-            'tahun_ajaran'  => ['nullable', 'string', 'max:9', 'regex:/^\d{4}\/\d{4}$/'],
-            'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ], [
-            'tahun_ajaran.regex' => 'Format tahun ajaran harus seperti 2025/2026.',
-        ]);
+        'nama_prestasi' => 'required|string|max:40',
+        'nama_siswa'    => 'required|string|max:40',
+        'tingkat'       => 'required|in:Sekolah,Kecamatan,Kabupaten,Provinsi,Nasional,Internasional',
+        'deskripsi'     => 'nullable|string',
+        'tahun_ajaran'  => ['nullable', 'string', 'max:9', 'regex:/^\d{4}\/\d{4}$/'],
+        'foto'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ], [
+        'tahun_ajaran.regex' => 'Format tahun ajaran harus seperti 2025/2026.',
+    ]);
 
         if ($request->hasFile('foto')) {
             if ($prestasi->foto) {

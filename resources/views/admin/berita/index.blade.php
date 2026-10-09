@@ -459,12 +459,15 @@
 {{-- BUKA ULANG MODAL JIKA VALIDASI GAGAL --}}
 @if ($errors->any())
     <script>
-        $(function () {
-            @if (old('_modal') === 'tambah')
+        document.addEventListener("DOMContentLoaded", function () {
+            var modalTambah = '{{ old("_modal") }}';
+            var beritaId = '{{ old("_berita_id") }}';
+
+            if (modalTambah === 'tambah') {
                 $('#modalTambahBerita').modal('show');
-            @elseif (old('_modal') === 'edit')
-                $('#modalEditBerita{{ old('_berita_id') }}').modal('show');
-            @endif
+            } else if (modalTambah === 'edit' && beritaId) {
+                $('#modalEditBerita' + beritaId).modal('show');
+            }
         });
     </script>
 @endif

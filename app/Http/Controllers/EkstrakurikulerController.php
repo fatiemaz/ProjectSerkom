@@ -18,7 +18,7 @@ class EkstrakurikulerController extends Controller
                       ->orWhere('pembina', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('nomor')
+            ->latest()
             ->paginate(10)
             ->withQueryString();
 
@@ -29,6 +29,8 @@ class EkstrakurikulerController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['_modal' => 'tambah']);
+
         $validated = $request->validate([
             'nama_ekskul'    => 'required|string|max:40',
             'pembina'        => 'nullable|string|max:40',
@@ -47,8 +49,15 @@ class EkstrakurikulerController extends Controller
             ->with('success', 'Ekstrakurikuler berhasil ditambahkan.');
     }
 
-    public function update(Request $request, Ekstrakurikuler $ekstrakurikuler)
+    public function update(Request $request, $id_ekskul)
     {
+        $ekstrakurikuler = Ekstrakurikuler::where('id_ekskul', $id_ekskul)->firstOrFail();
+
+        $request->merge([
+            '_modal' => 'edit',
+            '_ekskul_id' => $ekstrakurikuler->id_ekskul
+        ]);
+
         $validated = $request->validate([
             'nama_ekskul'    => 'required|string|max:40',
             'pembina'        => 'nullable|string|max:40',
@@ -58,7 +67,7 @@ class EkstrakurikulerController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
-            if ($ekstrakurikuler->gambar) {
+            if ($ekstrakurikuler->gambar && Storage::disk('public')->exists($ekstrakurikuler->gambar)) {
                 Storage::disk('public')->delete($ekstrakurikuler->gambar);
             }
             $validated['gambar'] = $request->file('gambar')->store('ekstrakurikuler', 'public');
@@ -70,9 +79,11 @@ class EkstrakurikulerController extends Controller
             ->with('success', 'Ekstrakurikuler berhasil diperbarui.');
     }
 
-    public function destroy(Ekstrakurikuler $ekstrakurikuler)
+    public function destroy($id_ekskul)
     {
-        if ($ekstrakurikuler->gambar) {
+        $ekstrakurikuler = Ekstrakurikuler::where('id_ekskul', $id_ekskul)->firstOrFail();
+
+        if ($ekstrakurikuler->gambar && Storage::disk('public')->exists($ekstrakurikuler->gambar)) {
             Storage::disk('public')->delete($ekstrakurikuler->gambar);
         }
 

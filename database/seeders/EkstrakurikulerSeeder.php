@@ -1,17 +1,27 @@
 <?php
 
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EkstrakurikulerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        DB::table('ekstrakurikuler')->insert([
+            [
+                'id_ekskul' => (string) Str::uuid(),
+                'nama_ekskul' => 'Pramuka',
+                'pembina' => 'Budi Santoso, S.Pd',
+                'jadwal_latihan' => 'Jumat, 15:00 WIB',
+                'deskripsi' => 'Kegiatan kepramukaan untuk membentuk karakter disiplin.',
+                'gambar' => 'pramuka.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }

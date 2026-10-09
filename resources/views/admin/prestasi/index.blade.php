@@ -104,6 +104,8 @@
                             <th style="width: 70px;">ID</th>
                             <th style="width: 90px;">Foto</th>
                             <th>Nama Prestasi</th>
+                            <th>Nama Siswa</th>
+                            <th>Tingkat</th>
                             <th>Tahun Ajaran</th>
                             <th>Deskripsi</th>
                             <th class="text-center" style="width: 130px;">Aksi</th>
@@ -130,6 +132,8 @@
                                 </td>
 
                                 <td>{{ $prestasi->nama_prestasi }}</td>
+                                <td>{{ $prestasi->nama_siswa }}</td>
+                                <td><span class="badge badge-primary">{{ $prestasi->tingkat ?: '-' }}</span></td>
                                 <td>{{ $prestasi->tahun_ajaran ?: '-' }}</td>
                                 <td>{{ $prestasi->deskripsi ? \Illuminate\Support\Str::limit($prestasi->deskripsi, 60) : '-' }}</td>
 
@@ -228,6 +232,34 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Nama Siswa</label>
+                            <input type="text" name="nama_siswa" maxlength="40"
+                                class="form-control {{ $isThis && $errors->has('nama_siswa') ? 'is-invalid' : '' }}"
+                                value="{{ $isThis ? old('nama_siswa') : $prestasi->nama_siswa }}" required>
+                            @if ($isThis)
+                                @error('nama_siswa')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tingkat</label>
+                            <select name="tingkat"
+                                    class="form-control {{ $isThis && $errors->has('tingkat') ? 'is-invalid' : '' }}" required>
+                                @foreach (['Sekolah','Kecamatan','Kabupaten','Provinsi','Nasional','Internasional'] as $t)
+                                    <option value="{{ $t }}"
+                                        {{ ($isThis ? old('tingkat') : $prestasi->tingkat) === $t ? 'selected' : '' }}>{{ $t }}</option>
+                                @endforeach
+                            </select>
+                            @if ($isThis)
+                                @error('tingkat')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            @endif
+                        </div>
+
+                        <div class="form-group">
                             <label>Tahun Ajaran</label>
                             <input type="text" name="tahun_ajaran" maxlength="9"
                                    placeholder="Contoh: 2025/2026"
@@ -310,6 +342,34 @@
                                value="{{ $isTambah ? old('nama_prestasi') : '' }}" required>
                         @if ($isTambah)
                             @error('nama_prestasi')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nama Siswa</label>
+                        <input type="text" name="nama_siswa" maxlength="40"
+                            class="form-control {{ $isTambah && $errors->has('nama_siswa') ? 'is-invalid' : '' }}"
+                            value="{{ $isTambah ? old('nama_siswa') : '' }}" required>
+                        @if ($isTambah)
+                            @error('nama_siswa')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tingkat</label>
+                        <select name="tingkat"
+                                class="form-control {{ $isTambah && $errors->has('tingkat') ? 'is-invalid' : '' }}" required>
+                            <option value="" disabled {{ $isTambah && old('tingkat') ? '' : 'selected' }}>-- Pilih Tingkat --</option>
+                            @foreach (['Sekolah','Kecamatan','Kabupaten','Provinsi','Nasional','Internasional'] as $t)
+                                <option value="{{ $t }}" {{ $isTambah && old('tingkat') === $t ? 'selected' : '' }}>{{ $t }}</option>
+                            @endforeach
+                        </select>
+                        @if ($isTambah)
+                            @error('tingkat')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         @endif
