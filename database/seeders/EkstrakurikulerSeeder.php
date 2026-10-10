@@ -18,7 +18,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'pembina' => 'Budi Santoso, S.Pd',
                 'jadwal_latihan' => 'Jumat, 15:00 WIB',
                 'deskripsi' => 'Kegiatan kepramukaan untuk membentuk karakter disiplin.',
-                'gambar' => 'pramuka.jpg',
+                'gambar' => 'ekstrakurikuler/pramuka.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

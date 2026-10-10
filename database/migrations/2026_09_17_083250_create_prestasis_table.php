@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->string('foto', 100)->nullable();
             $table->string('tahun_ajaran', 9)->nullable();
+            $table->foreignUuid('id_siswa')->nullable()->constrained('siswa', 'id_siswa')->nullOnDelete();
             $table->timestamps();
         });
     }

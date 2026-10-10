@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pengumuman', function (Blueprint $table) {
             $table->uuid('id_pengumuman')->primary();
-            $table->string('judul', 50);
+            $table->string('judul', 150);
             $table->text('isi')->nullable();
             $table->date('tanggal')->nullable();
             $table->enum('status', ['Publish', 'Draft'])->default('Draft');

@@ -18,7 +18,7 @@
         @php
             $cards = [
                 ['Total Guru & Staf',     $totalGuru,      'icon-users',     'Orang'],
-                ['Guru Mapel',            $totalGuruMapel, 'icon-book', 'Buku'],
+                ['Guru Mapel',            $totalGuruMapel, 'icon-book', 'Orang'],
                 ['Tenaga Kependidikan',   $totalTendik,    'icon-briefcase', 'Orang'],
             ];
         @endphp

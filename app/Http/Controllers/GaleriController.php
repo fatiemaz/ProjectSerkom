@@ -17,7 +17,12 @@ class GaleriController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('admin.galeri.index', compact('galeris'));
+        $totalGaleri = Galeri::count();
+        $totalFoto   = Galeri::where('kategori', 'Foto')->count();
+        $totalVideo  = Galeri::where('kategori', 'Video')->count();
+
+        return view('admin.galeri.index', compact('galeris', 'totalGaleri', 'totalFoto', 'totalVideo'));
+
     }
 
     public function store(Request $request)

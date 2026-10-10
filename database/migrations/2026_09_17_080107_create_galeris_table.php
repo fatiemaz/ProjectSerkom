@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('galeri', function (Blueprint $table) {
             $table->uuid('id_galeri')->primary();
-            $table->string('judul', 50);
+            $table->string('judul', 150);
             $table->text('keterangan')->nullable();
             $table->string('file', 100)->nullable();
             $table->enum('kategori', ['Foto', 'Video'])->nullable();

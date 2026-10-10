@@ -39,7 +39,7 @@ class GaleriSeeder extends Seeder
                 'id_galeri' => (string) Str::uuid(),
                 'judul' => 'Pentas Seni 2026',
                 'keterangan' => 'Dokumentasi acara penutupan pentas seni.',
-                'file' => 'pensi.jpg',
+                'file' => 'galeri/pensi.jpg',
                 'kategori' => 'Foto',
                 'tanggal' => now()->toDateString(),
                 'created_at' => now(),

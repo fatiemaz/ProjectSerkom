@@ -65,7 +65,7 @@
                     <li class="sidenav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('admin.dashboard') }}" class="sidenav-link">
                             <i class="sidenav-icon feather icon-home"></i>
-                            <div>Dashboards</div>
+                            <div>Beranda</div>
                         </a>
                     </li>
 
@@ -73,7 +73,7 @@
                     <li class="sidenav-item {{ request()->routeIs('profil-sekolah.*') ? 'active' : '' }}">
                         <a href="{{ route('profil-sekolah.index') }}" class="sidenav-link">
                             <i class="sidenav-icon feather icon-type"></i>
-                            <div>Profile Sekolah</div>
+                            <div>Profil Sekolah</div>
                         </a>
                     </li>
 
@@ -89,7 +89,7 @@
                         <li class="sidenav-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                             <a href="{{ route('user.index') }}" class="sidenav-link">
                                 <i class="sidenav-icon feather icon-user"></i>
-                                <div>User</div>
+                                <div>Pengguna</div>
                             </a>
                         </li>
                     @endif
@@ -139,8 +139,17 @@
                     </li>
 
                 </ul>
+
+                <!-- Akses ke Landing Page (pojok bawah sidebar) -->
+                <div class="mt-auto p-3">
+                    <a href="{{ route('landing') }}" target="_blank"
+                       class="d-flex align-items-center justify-content-center text-white"
+                       style="border: 1px solid rgba(255,255,255,.35); border-radius: 8px; padding: 10px 12px; text-decoration: none; background: rgba(255,255,255,.05);">
+                        <i class="feather icon-external-link mr-2"></i>
+                        <span>Lihat Landing Page</span>
+                    </a>
+                </div>
             </div>
-            <!-- [ Layout sidenav ] End -->
 
             <!-- [ Layout container ] Start -->
             <div class="layout-container">

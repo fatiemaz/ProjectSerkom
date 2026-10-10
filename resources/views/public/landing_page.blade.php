@@ -2,8 +2,6 @@
 
 @section('content')
 
-@php $pengumumanTerbaru = collect($pengumumans ?? [])->first(); @endphp
-
 {{-- HERO --}}
 <section class="hero">
     <img src="{{ asset('assets/img/sekolah2.png') }}" alt="Sekolah">
@@ -18,16 +16,6 @@
                     <a href="{{ route('public.berita') }}" class="btn-light-o">Berita Terbaru</a>
                 </div>
             </div>
-            @if ($pengumumanTerbaru)
-                <div class="col-lg-4 offset-lg-1">
-                    <div class="hero-note">
-                        <span class="eyebrow mb-1"><i class="bi bi-megaphone-fill me-1"></i> Pengumuman Terbaru</span>
-                        <h5 class="fw-bold text-dark">{{ Str::limit($pengumumanTerbaru->judul, 60) }}</h5>
-                        <p class="small text-muted mb-3">{{ Str::limit(strip_tags($pengumumanTerbaru->isi), 90) }}</p>
-                        <a href="{{ route('public.pengumuman.show', $pengumumanTerbaru) }}" class="btn-sph btn-sm-pill">Selengkapnya</a>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 </section>
@@ -289,10 +277,7 @@
                 <h2 class="fw-bold mb-2">Kenali Lebih Dekat {{ $profil->nama_sekolah ?? 'Sekolah Kami' }}</h2>
                 <p class="mb-0 opacity-75">Lihat profil, visi, dan misi sekolah, atau hubungi kami untuk informasi lebih lanjut.</p>
             </div>
-            <div class="col-lg-4 text-lg-end">
-                <a href="{{ route('public.profil') }}" class="btn-gold me-2">Profil Sekolah</a>
-                <a href="#kontak" class="btn-light-o">Hubungi Kami</a>
-            </div>
+            
         </div>
     </div>
 </section>

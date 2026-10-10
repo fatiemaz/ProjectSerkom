@@ -23,7 +23,7 @@ class ProfileSeeder extends Seeder
             'visi' => 'Menjadi sekolah unggulan berkarakter dan berprestasi.',
             'misi' => 'Meningkatkan mutu pendidikan berbasis teknologi dan moral.',
             'tahun_berdiri' => 1995,
-            'deskripsi' => 'Sekolah menengah atas terbaik dengan berbagai fasilitas modern.',
+            'deskripsi' => 'Sekolah menengah pertama terbaik dengan berbagai fasilitas modern.',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

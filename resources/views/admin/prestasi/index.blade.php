@@ -349,14 +349,16 @@
 
                     <div class="form-group">
                         <label>Nama Siswa</label>
-                        <input type="text" name="nama_siswa" maxlength="40"
-                            class="form-control {{ $isTambah && $errors->has('nama_siswa') ? 'is-invalid' : '' }}"
-                            value="{{ $isTambah ? old('nama_siswa') : '' }}" required>
-                        @if ($isTambah)
-                            @error('nama_siswa')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        @endif
+                        <select name="id_siswa" class="form-control" required>
+                            <option value="">-- Pilih Siswa --</option>
+                            @foreach ($siswas as $siswa)
+                                <option value="{{ $siswa->id_siswa }}"
+                                    {{ old('id_siswa', $prestasi->id_siswa ?? '') == $siswa->id_siswa ? 'selected' : '' }}>
+                                    {{ $siswa->nama_siswa }}{{ $siswa->nisn ? ' - ' . $siswa->nisn : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_siswa') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
 
                     <div class="form-group">

@@ -172,7 +172,6 @@
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.pengumuman*') ? 'active' : '' }}" href="{{ route('public.pengumuman') }}">Pengumuman</a></li>
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.galeri*') ? 'active' : '' }}" href="{{ route('public.galeri') }}">Galeri</a></li>
                     </ul>
-                    <a href="#kontak" class="btn-sph btn-sm-pill mt-3 mt-xl-0">Hubungi Kami</a>
                 </div>
             </div>
         </nav>
