@@ -10,6 +10,7 @@ use App\Models\Pengumuman;
 use App\Models\Ekstrakurikuler;
 use App\Models\Berita;
 use App\Models\Profile;
+use App\Models\Fasilitas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
@@ -38,8 +39,9 @@ class PublicController extends Controller
         $galeris     = Galeri::latest()->take(8)->get();
         $pengumumans = Pengumuman::latest()->take(2)->get(); // Hanya ambil 2 pengumuman terbaru
         $profil      = Profile::first();
+        $fasilitas = Fasilitas::latest()->take(6)->get();
 
-        return view('public.landing_page', compact('stats', 'beritas', 'ekskuls', 'prestasis', 'gurus', 'galeris', 'pengumumans', 'profil'));
+        return view('public.landing_page', compact('stats', 'beritas', 'ekskuls', 'prestasis', 'gurus', 'galeris', 'pengumumans', 'profil', 'fasilitas'));
     }
 
     public function berita()
@@ -53,13 +55,13 @@ class PublicController extends Controller
         // Pastikan berita berstatus Publish
         abort_unless($berita->status === 'Publish', 404);
 
-        $beritaLainnya = Berita::where('status', 'Publish')
-            ->where('id_berita', '!=', $berita->id_berita)
+        $lainnya = Berita::where('status', 'Publish')
+            ->where($berita->getKeyName(), '!=', $berita->getKey())
             ->latest()
-            ->take(3)
+            ->take(4)
             ->get();
 
-        return view('public.berita.show', compact('berita', 'beritaLainnya'));
+        return view('public.berita.show', compact('berita', 'lainnya'));
     }
 
     public function prestasi()

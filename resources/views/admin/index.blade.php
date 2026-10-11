@@ -111,8 +111,14 @@
                     <li class="sidenav-divider mb-1"></li>
                     <li class="sidenav-item {{ request()->routeIs('ekstrakurikuler.*') ? 'active' : '' }}">
                         <a href="{{ route('ekstrakurikuler.index') }}" class="sidenav-link">
-                            <i class="sidenav-icon feather icon-feather"></i>
+                            <i class="sidenav-icon feather icon-activity"></i>
                             <div>Ekstrakurikuler</div>
+                        </a>
+                    </li>
+                    <li class="sidenav-item {{ request()->routeIs('fasilitas.*') ? 'active' : '' }}">
+                        <a href="{{ route('fasilitas.index') }}" class="sidenav-link">
+                            <i class="sidenav-icon feather icon-home"></i>
+                            <div>Fasilitas</div>
                         </a>
                     </li>
 

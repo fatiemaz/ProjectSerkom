@@ -2,26 +2,28 @@
 
 @section('content')
 
-{{-- HERO --}}
-<section class="hero">
-    <img src="{{ asset('assets/img/sekolah2.png') }}" alt="Sekolah">
-    <div class="container">
-        <div class="row align-items-end g-4">
+{{-- HERO VIDEO --}}
+<section class="hero hero-center">
+    <img src="{{ asset('assets/img/sekolah2.png') }}" alt="{{ $profil->nama_sekolah ?? 'Sekolah' }}">
+    @if (!empty($profil?->video))
+        <video class="hero-video" autoplay muted loop playsinline
+               poster="{{ asset('assets/img/sekolah2.png') }}">
+            <source src="{{ asset('storage/' . $profil->video) }}" type="video/mp4">
+        </video>
+    @endif
+    <div class="container" data-aos="fade-right">
+        <div class="row">
             <div class="col-lg-7">
                 <span class="eyebrow light">Selamat Datang di {{ $profil->nama_sekolah ?? 'SMPN 1 Mangunreja' }}</span>
                 <h1 class="mb-3">Membentuk Generasi Cerdas, Berkarakter, dan Berprestasi</h1>
-                <p class="lead mb-4 opacity-75">Lingkungan belajar yang kondusif untuk tumbuh, berprestasi, dan berkarakter.</p>
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="{{ route('public.profil') }}" class="btn-gold">Kenali Sekolah Kami</a>
-                    <a href="{{ route('public.berita') }}" class="btn-light-o">Berita Terbaru</a>
-                </div>
+                <p class="lead mb-0">Lingkungan belajar yang kondusif untuk tumbuh, berprestasi, dan berkarakter.</p>
             </div>
         </div>
     </div>
 </section>
 
 {{-- SEKILAS --}}
-<section class="sec">
+<section class="sec" data-aos="fade-up">
     <div class="container">
         <div class="mb-5">
             <span class="eyebrow">Sekilas Sekolah</span>
@@ -40,14 +42,14 @@
 <section class="sec sec-soft">
     <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6 order-lg-2">
+            <div class="col-lg-6 order-lg-2" data-aos="fade-up-left">
                 @if ($profil?->foto && file_exists(public_path('storage/' . $profil->foto)))
                     <img src="{{ asset('storage/' . $profil->foto) }}" alt="{{ $profil->nama_sekolah }}" class="frame-img" style="max-height: 400px;">
                 @else
                     <div class="thumb-ph frame-img" style="height: 340px;"><i class="bi bi-building" style="font-size:4rem;"></i></div>
                 @endif
             </div>
-            <div class="col-lg-6 order-lg-1">
+            <div class="col-lg-6 order-lg-1" data-aos="fade-up-right">
                 <span class="eyebrow">Mengenal Lebih Dekat</span>
                 <h2 class="sec-title mb-3">Profil {{ $profil->nama_sekolah ?? 'Sekolah' }}</h2>
                 <p class="text-secondary lh-lg mb-4">{!! nl2br(e(Str::limit($profil->deskripsi ?? 'Profil sekolah belum diisi.', 600))) !!}</p>
@@ -63,24 +65,55 @@
     </div>
 </section>
 
-{{-- JELAJAHI --}}
-<section class="sec">
-    <div class="container">
-        <div class="mb-5">
-            <span class="eyebrow">Jelajahi</span>
-            <h2 class="sec-title">Kehidupan di Sekolah Kami</h2>
+{{-- FASILITAS (kartu bisa dibalik) --}}
+@if ($fasilitas->isNotEmpty())
+    <section class="sec">
+        <div class="container" data-aos="fade-up">
+            <div class="mb-5">
+                <span class="eyebrow">Fasilitas</span>
+                <h2 class="sec-title">Sarana Penunjang Belajar</h2>
+            </div>
+
+            <div class="row g-3">
+                @foreach ($fasilitas as $f)
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="flip ratio" style="--bs-aspect-ratio: 125%;" tabindex="0" role="button"
+                            aria-label="Lihat detail {{ $f->nama }}">
+                            <div class="flip-inner">
+
+                                {{-- DEPAN: foto --}}
+                                <div class="flip-face rounded-4 overflow-hidden shadow-sm bg-all text-white">
+                                    @if ($f->foto)
+                                        <img src="{{ asset('storage/' . $f->foto) }}" alt="{{ $f->nama }}"
+                                            class="w-100 h-100 rounded-4" style="object-fit: cover;">
+                                    @else
+                                        <div class="d-flex h-100 align-items-center justify-content-center">
+                                            <i class="bi bi-building fs-1"></i>
+                                        </div>
+                                    @endif
+                                    <span class="position-absolute bottom-0 end-0 m-2 badge rounded-pill text-bg-dark opacity-75">
+                                        <i class="bi bi-arrow-repeat"></i>
+                                    </span>
+                                </div>
+
+                                {{-- BELAKANG: nama dan deskripsi --}}
+                                <div class="flip-face flip-back rounded-4 shadow-sm text-white p-3 d-flex flex-column justify-content-center text-center overflow-auto"
+                                    style="background: #0a2a7a;">
+                                    <h6 class="fw-bold mb-2">{{ $f->nama }}</h6>
+                                    <p class="small mb-0 opacity-75">{{ $f->deskripsi ?: 'Belum ada deskripsi.' }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3"><a href="{{ route('public.prestasi') }}" class="tile"><i class="bi bi-trophy-fill big"></i><h5>Prestasi</h5><p>Jejak capaian membanggakan siswa di berbagai bidang.</p><span class="fw-bold">Lihat <i class="bi bi-arrow-right"></i></span></a></div>
-            <div class="col-md-6 col-lg-3"><a href="{{ route('public.ekskul') }}" class="tile"><i class="bi bi-activity big"></i><h5>Ekstrakurikuler</h5><p>Wadah mengembangkan bakat dan minat siswa.</p><span class="fw-bold">Lihat <i class="bi bi-arrow-right"></i></span></a></div>
-            <div class="col-md-6 col-lg-3"><a href="{{ route('public.guru') }}" class="tile"><i class="bi bi-person-badge-fill big"></i><h5>Guru &amp; Staf</h5><p>Pendidik profesional yang berdedikasi tinggi.</p><span class="fw-bold">Lihat <i class="bi bi-arrow-right"></i></span></a></div>
-            <div class="col-md-6 col-lg-3"><a href="{{ route('public.galeri') }}" class="tile"><i class="bi bi-images big"></i><h5>Galeri</h5><p>Dokumentasi momen dan kegiatan sekolah.</p><span class="fw-bold">Lihat <i class="bi bi-arrow-right"></i></span></a></div>
-        </div>
-    </div>
-</section>
+    </section>
+@endif
 
 {{-- BERITA --}}
-<section class="sec sec-soft">
+<section class="sec sec-soft" data-aos="fade-up">
     <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
             <div>
@@ -119,13 +152,13 @@
 <section class="sec">
     <div class="container">
         <div class="row g-5">
-            <div class="col-lg-4">
+            <div class="col-lg-4" data-aos="fade-up-right">
                 <span class="eyebrow">Pengumuman</span>
                 <h2 class="sec-title mb-3">Informasi Resmi Sekolah</h2>
                 <p class="sec-sub mb-4">Pantau pengumuman terbaru agar tidak ketinggalan informasi penting dari sekolah.</p>
                 <a href="{{ route('public.pengumuman') }}" class="btn-sph-o">Arsip Pengumuman</a>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-8" data-aos="fade-up-left">
                 <div class="d-flex flex-column gap-3">
                     @forelse ($pengumumans as $pengumuman)
                         @php $tgl = \Carbon\Carbon::parse($pengumuman->created_at); @endphp
@@ -149,8 +182,8 @@
 </section>
 
 {{-- PRESTASI --}}
-<section class="sec sec-soft">
-    <div class="container">
+<section class="sec sec-soft" >
+    <div class="container" data-aos="fade-up">
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
             <div>
                 <span class="eyebrow">Prestasi</span>
@@ -179,7 +212,7 @@
 
 {{-- EKSTRAKURIKULER --}}
 <section class="sec">
-    <div class="container">
+    <div class="container" data-aos="fade-up">
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
             <div>
                 <span class="eyebrow">Ekstrakurikuler</span>
@@ -208,7 +241,7 @@
 </section>
 
 {{-- GURU --}}
-<section class="sec sec-soft">
+<section class="sec sec-soft" data-aos="fade-up">
     <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
             <div>
@@ -240,7 +273,7 @@
 
 {{-- GALERI --}}
 <section class="sec">
-    <div class="container">
+    <div class="container" data-aos="fade-up">
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5">
             <div>
                 <span class="eyebrow">Galeri</span>
@@ -264,20 +297,6 @@
             @empty
                 <div class="col-12 text-center text-muted py-3">Belum ada foto galeri.</div>
             @endforelse
-        </div>
-    </div>
-</section>
-
-{{-- CTA --}}
-<section class="cta-band on-dark">
-    <div class="container">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-8">
-                <span class="eyebrow">Bergabung Bersama Kami</span>
-                <h2 class="fw-bold mb-2">Kenali Lebih Dekat {{ $profil->nama_sekolah ?? 'Sekolah Kami' }}</h2>
-                <p class="mb-0 opacity-75">Lihat profil, visi, dan misi sekolah, atau hubungi kami untuk informasi lebih lanjut.</p>
-            </div>
-            
         </div>
     </div>
 </section>

@@ -14,6 +14,7 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\FasilitasController;
 
 
 Route::middleware('guest')->group(function () {
@@ -67,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('ekstrakurikuler', EkstrakurikulerController::class)->only(['index', 'store', 'update', 'destroy']);
 
     Route::resource('prestasi', PrestasiController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('fasilitas', FasilitasController::class)->only(['index', 'store', 'update', 'destroy']);
 
     Route::resource('pengumuman', PengumumanController::class)->only(['index', 'store', 'update', 'destroy']);
 

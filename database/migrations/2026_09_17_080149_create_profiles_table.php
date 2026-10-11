@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_sekolah', 40);
             $table->string('kepala_sekolah', 40);
             $table->string('foto', 100)->nullable();
+            $table->string('video', 100)->nullable();
             $table->string('logo', 100)->nullable();
             $table->string('npsn', 10)->nullable();
             $table->text('alamat')->nullable();

@@ -84,7 +84,7 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus.');
     }
 
-    // Mengaktifkan / menonaktifkan user
+    // Mengaktifkan dan menonaktifkan user
     public function toggleStatus(User $user)
     {
         if ($user->getKey() === auth()->id()) {

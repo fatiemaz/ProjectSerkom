@@ -1,5 +1,7 @@
 @extends('public.template')
 
+@section('title', 'Pengumuman - SMPN 1 Mangunreja')
+
 @section('content')
 <section class="page-hero">
     <div class="container">

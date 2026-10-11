@@ -258,6 +258,25 @@
                                 <div class="text-danger small">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label>Video (MP4)</label>
+
+                            @if (!empty($profile->video))
+                                <video src="{{ asset('storage/' . $profile->video) }}" muted controls
+                                    style="width: 220px; border-radius: 8px;" class="d-block mb-2"></video>
+                                <div class="custom-control custom-checkbox mb-2">
+                                    <input type="checkbox" class="custom-control-input" id="hapus_video" name="hapus_video" value="1">
+                                    <label class="custom-control-label" for="hapus_video">Hapus video ini</label>
+                                </div>
+                            @endif
+
+                            <input type="file" name="video" accept="video/mp4" class="form-control-file">
+                            <small class="text-muted">MP4, maks. 20 MB, sebaiknya 10-20 detik. Kosongkan jika tidak diganti.</small>
+                            @error('video')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                 </div>
