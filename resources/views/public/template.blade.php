@@ -224,8 +224,8 @@
                     <h6>Hubungi Kami</h6>
                     <ul>
                         <li class="d-flex gap-2"><i class="bi bi-geo-alt-fill text-warning"></i> <span>{{ $profilGlobal->alamat ?? 'Jl. Raya Mangunreja, Tasikmalaya' }}</span></li>
-                        <li class="d-flex gap-2"><i class="bi bi-whatsapp text-warning"></i> <span>{{ $profilGlobal->kontak ?? '08XXXXXXXXXX' }}</span></li>
-                        <li class="d-flex gap-2"><i class="bi bi-envelope-fill text-warning"></i> <span>{{ $profilGlobal->email ?? 'info@smpn1mangunreja.sch.id' }}</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-whatsapp text-warning"></i> <span>{{ $profilGlobal->kontak ?? '0265546408' }}</span></li>
+                        <li class="d-flex gap-2"><i class="bi bi-envelope-fill text-warning"></i> <span>{{ $profilGlobal->email ?? 'smpn1mgrj@gmail.com' }}</span></li>
                     </ul>
                 </div>
             </div>

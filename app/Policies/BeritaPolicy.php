@@ -4,63 +4,49 @@ namespace App\Policies;
 
 use App\Models\Berita;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class BeritaPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->isActive() && ($user->isAdmin() || $user->isOperator());
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, Berita $berita): bool
     {
-        return false;
+        // Melihat boleh untuk semua admin/operator aktif
+        return $user->isActive() && ($user->isAdmin() || $user->isOperator());
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Berita $berita): bool
     {
-        return false;
+        return $this->canManage($user, $berita);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Berita $berita): bool
     {
-        return false;
+        return $this->canManage($user, $berita);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Berita $berita): bool
+    private function canManage(User $user, Berita $berita): bool
     {
-        return false;
-    }
+        // User yang tidak aktif tidak boleh apa-apa
+        if (! $user->isActive()) {
+            return false;
+        }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Berita $berita): bool
-    {
-        return false;
+        // Admin boleh semua berita (termasuk milik user yang sudah nonaktif)
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Operator: hanya berita miliknya sendiri,
+        // dan pembuat berita harus masih aktif
+        $owner = $berita->user;
+
+        return $user->isOperator()
+            && $owner
+            && $owner->isActive()
+            && $user->id_user === $berita->id_user;
     }
 }

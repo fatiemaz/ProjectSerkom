@@ -12,6 +12,7 @@ class User extends Authenticatable
 
     protected $table = 'user';
     protected $primaryKey = 'id_user';
+    public $incrementing = false;
     protected $keyType = 'string';
 
     protected $guarded = [];
@@ -19,7 +20,30 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
- 
+
+    // Menentukan kolom UUID (wajib karena PK bukan "id")
+    public function uniqueIds(): array
+    {
+        return ['id_user'];
+    }
+
+    // ===== Helper role & status (dipakai BeritaPolicy) =====
+    public function isAdmin(): bool
+    {
+        return strtolower($this->role) === 'admin';
+    }
+
+    public function isOperator(): bool
+    {
+        return strtolower($this->role) === 'operator';
+    }
+
+    public function isActive(): bool
+    {
+        return strtolower($this->status) === 'aktif';
+    }
+
+    // ===== Relasi =====
     public function pengumuman()
     {
         return $this->hasMany(Pengumuman::class, 'id_user', 'id_user');

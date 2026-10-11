@@ -1,19 +1,22 @@
+{{--Hak akses ditentukan oleh BeritaPolicy lewat directive @can--}}
 @extends('admin.index')
 
 @section('contant')
 
 <div class="container-fluid flex-grow-1 container-p-y">
 
-    {{-- JUDUL --}}
     <div class="row">
         <div class="col-12">
             <h4 class="font-weight-bold mb-4">Data Berita</h4>
         </div>
     </div>
 
-    {{-- CARD STATISTIK --}}
+    {{-- ===================== CARD STATISTIK =====================
+         Angka dihitung di controller. Untuk operator, angka ini
+         hanya menghitung berita miliknya sendiri. --}}
     <div class="row">
 
+        {{-- Total berita --}}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card h-100">
                 <div class="card-body position-relative">
@@ -32,6 +35,7 @@
             </div>
         </div>
 
+        {{-- Berita berstatus Publish --}}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card h-100">
                 <div class="card-body position-relative">
@@ -50,6 +54,7 @@
             </div>
         </div>
 
+        {{-- Berita berstatus Draft --}}
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="card h-100">
                 <div class="card-body position-relative">
@@ -70,7 +75,7 @@
 
     </div>
 
-    {{-- SEARCH + TAMBAH --}}
+    {{-- ===================== PENCARIAN + TOMBOL TAMBAH ===================== --}}
     <div class="row align-items-center mb-4">
 
         <div class="col-md-8">
@@ -87,6 +92,7 @@
                            value="{{ request('search') }}"
                            style="box-shadow: none;">
 
+                    {{-- Tombol reset hanya muncul saat sedang mencari --}}
                     @if (request()->filled('search'))
                         <div class="input-group-append">
                             <a href="{{ route('berita.index') }}" class="btn btn-sm btn-outline-secondary align-self-center">
@@ -94,7 +100,6 @@
                             </a>
                         </div>
                     @endif
-
                 </div>
             </form>
         </div>
@@ -109,7 +114,7 @@
 
     </div>
 
-    {{-- CARD TABEL --}}
+    {{-- ===================== TABEL BERITA ===================== --}}
     <div class="card">
 
         <div class="card-header">
@@ -118,6 +123,7 @@
 
         <div class="card-body">
 
+            {{-- Pesan sukses / error dari controller (->with('success') / ->with('error')) --}}
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show">
                     <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
@@ -139,7 +145,7 @@
 
                     <thead>
                         <tr>
-                            <th style="width: 70px;">ID</th>
+                            <th style="width: 70px;">No</th>
                             <th style="width: 90px;">Gambar</th>
                             <th>Judul</th>
                             <th>Tanggal</th>
@@ -153,8 +159,11 @@
                         @forelse ($beritas as $berita)
                             <tr>
 
-                                <td>{{ $berita->nomor }}</td>
+                                {{-- Nomor urut yang tetap benar di halaman 2, 3, dst.
+                                     (sebelumnya $berita->nomor tidak ada di model/migration) --}}
+                                <td>{{ $beritas->firstItem() + $loop->index }}</td>
 
+                                {{-- Gambar: tampilkan thumbnail, atau ikon placeholder jika kosong --}}
                                 <td>
                                     @if ($berita->gambar)
                                         <img src="{{ asset('storage/' . $berita->gambar) }}" alt="Gambar"
@@ -168,6 +177,7 @@
                                     @endif
                                 </td>
 
+                                {{-- Judul + cuplikan isi (60 karakter) --}}
                                 <td>
                                     <div>{{ $berita->judul }}</div>
                                     @if ($berita->isi)
@@ -189,37 +199,54 @@
                                     @endif
                                 </td>
 
+                                {{-- Nama penulis (relasi user) --}}
                                 <td>{{ $berita->user->name ?? $berita->user->username ?? '-' }}</td>
 
+                                {{-- ===== KOLOM AKSI =====
+                                     @can('update', $berita) memanggil BeritaPolicy@update:
+                                       - Admin aktif            : selalu true
+                                       - Operator aktif         : true hanya jika berita miliknya
+                                                                  dan pembuatnya masih aktif
+                                       - Selain itu             : false -> tampil ikon gembok
+                                     Aturan edit dan hapus sama, jadi cukup satu @can. --}}
                                 <td>
-                                    <div class="d-flex justify-content-center">
+                                    @can('update', $berita)
+                                        <div class="d-flex justify-content-center">
 
-                                        <button type="button"
-                                                class="btn btn-sm btn-outline-primary mr-2"
-                                                title="Edit Berita"
-                                                data-toggle="modal"
-                                                data-target="#modalEditBerita{{ $berita->id_berita }}">
-                                            <i class="feather icon-edit-2"></i>
-                                        </button>
-
-                                        <form action="{{ route('berita.destroy', $berita->id_berita) }}"
-                                              method="POST"
-                                              onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
-                                                    class="btn btn-sm btn-outline-danger"
-                                                    title="Hapus Berita">
-                                                <i class="feather icon-trash-2"></i>
+                                            {{-- Tombol edit: membuka modal edit milik berita ini --}}
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-primary mr-2"
+                                                    title="Edit Berita"
+                                                    data-toggle="modal"
+                                                    data-target="#modalEditBerita{{ $berita->id_berita }}">
+                                                <i class="feather icon-edit-2"></i>
                                             </button>
-                                        </form>
 
-                                    </div>
+                                            {{-- Tombol hapus: form DELETE dengan konfirmasi --}}
+                                            <form action="{{ route('berita.destroy', $berita->id_berita) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        title="Hapus Berita">
+                                                    <i class="feather icon-trash-2"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    @else
+                                        {{-- Tidak berhak: tampilkan gembok saja --}}
+                                        <div class="text-center text-muted" title="Anda tidak memiliki akses">
+                                            <i class="feather icon-lock"></i>
+                                        </div>
+                                    @endcan
                                 </td>
 
                             </tr>
                         @empty
+                            {{-- Tampilan saat tidak ada data --}}
                             <tr>
                                 <td colspan="7" class="text-center py-5">
                                     <div class="mb-2">
@@ -235,6 +262,7 @@
                 </table>
             </div>
 
+            {{-- Pagination --}}
             @if ($beritas->hasPages())
                 <div class="mt-3">
                     {{ $beritas->links() }}
@@ -248,119 +276,135 @@
 </div>
 
 
-{{-- MODAL EDIT BERITA (di luar tabel) --}}
+{{-- ===================== MODAL EDIT BERITA =====================
+     Ditaruh di luar tabel. Hanya SATU @foreach (bug sebelumnya: ada dua).
+     @can membuat modal tidak dirender untuk berita yang tidak boleh diedit. --}}
 @foreach ($beritas as $berita)
-    @php
-        $isThis = old('_modal') === 'edit' && old('_berita_id') === $berita->id_berita;
-        $tgl    = $isThis
-                    ? old('tanggal')
-                    : ($berita->tanggal ? \Carbon\Carbon::parse($berita->tanggal)->format('Y-m-d') : '');
-        $stat   = $isThis ? old('status') : $berita->status;
-    @endphp
+    @can('update', $berita)
 
-    <div class="modal fade" id="modalEditBerita{{ $berita->id_berita }}" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+        @php
+            // $isThis = true jika modal ini yang sedang diisi saat validasi gagal,
+            // sehingga input lama (old) dipulihkan hanya di modal yang benar.
+            $isThis = old('_modal') === 'edit' && old('_berita_id') === $berita->id_berita;
 
-                <form action="{{ route('berita.update', $berita->id_berita) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" name="_modal" value="edit">
-                    <input type="hidden" name="_berita_id" value="{{ $berita->id_berita }}">
+            // Format tanggal untuk <input type="date"> harus Y-m-d
+            $tgl  = $isThis
+                        ? old('tanggal')
+                        : ($berita->tanggal ? \Carbon\Carbon::parse($berita->tanggal)->format('Y-m-d') : '');
+            $stat = $isThis ? old('status') : $berita->status;
+        @endphp
 
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Berita</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+        <div class="modal fade" id="modalEditBerita{{ $berita->id_berita }}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
 
-                    <div class="modal-body">
+                    <form action="{{ route('berita.update', $berita->id_berita) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        {{-- Penanda agar saat validasi gagal, modal yang tepat dibuka kembali --}}
+                        <input type="hidden" name="_modal" value="edit">
+                        <input type="hidden" name="_berita_id" value="{{ $berita->id_berita }}">
 
-                        <div class="form-group">
-                            <label>Judul</label>
-                            <input type="text" name="judul" maxlength="50"
-                                   class="form-control {{ $isThis && $errors->has('judul') ? 'is-invalid' : '' }}"
-                                   value="{{ $isThis ? old('judul') : $berita->judul }}" required>
-                            @if ($isThis)
-                                @error('judul')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            @endif
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Berita</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label>Tanggal</label>
-                                <input type="date" name="tanggal"
-                                       class="form-control {{ $isThis && $errors->has('tanggal') ? 'is-invalid' : '' }}"
-                                       value="{{ $tgl }}">
+                        <div class="modal-body">
+
+                            {{-- Judul (maxlength 150 sesuai validasi & migration) --}}
+                            <div class="form-group">
+                                <label>Judul</label>
+                                <input type="text" name="judul" maxlength="150"
+                                       class="form-control {{ $isThis && $errors->has('judul') ? 'is-invalid' : '' }}"
+                                       value="{{ $isThis ? old('judul') : $berita->judul }}" required>
                                 @if ($isThis)
-                                    @error('tanggal')
+                                    @error('judul')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 @endif
                             </div>
 
-                            <div class="form-group col-md-6">
-                                <label>Status</label>
-                                <select name="status"
-                                        class="form-control {{ $isThis && $errors->has('status') ? 'is-invalid' : '' }}" required>
-                                    <option value="Draft" {{ $stat === 'Draft' ? 'selected' : '' }}>Draft</option>
-                                    <option value="Publish" {{ $stat === 'Publish' ? 'selected' : '' }}>Publish</option>
-                                </select>
-                                @if ($isThis)
-                                    @error('status')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Isi</label>
-                            <textarea name="isi" rows="5"
-                                      class="form-control {{ $isThis && $errors->has('isi') ? 'is-invalid' : '' }}">{{ $isThis ? old('isi') : $berita->isi }}</textarea>
-                            @if ($isThis)
-                                @error('isi')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label>Gambar</label>
-                            @if ($berita->gambar)
-                                <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $berita->gambar) }}" alt="Gambar"
-                                         style="width: 110px; height: 70px; border-radius: 8px; object-fit: cover;">
+                            <div class="form-row">
+                                {{-- Tanggal --}}
+                                <div class="form-group col-md-6">
+                                    <label>Tanggal</label>
+                                    <input type="date" name="tanggal"
+                                           class="form-control {{ $isThis && $errors->has('tanggal') ? 'is-invalid' : '' }}"
+                                           value="{{ $tgl }}">
+                                    @if ($isThis)
+                                        @error('tanggal')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    @endif
                                 </div>
-                            @endif
-                            <input type="file" name="gambar" accept="image/*" class="form-control-file">
-                            <small class="text-muted">Maks. 2 MB. Kosongkan jika tidak diganti.</small>
-                            @if ($isThis)
-                                @error('gambar')
-                                    <div class="text-danger small">{{ $message }}</div>
-                                @enderror
-                            @endif
+
+                                {{-- Status --}}
+                                <div class="form-group col-md-6">
+                                    <label>Status</label>
+                                    <select name="status"
+                                            class="form-control {{ $isThis && $errors->has('status') ? 'is-invalid' : '' }}" required>
+                                        <option value="Draft" {{ $stat === 'Draft' ? 'selected' : '' }}>Draft</option>
+                                        <option value="Publish" {{ $stat === 'Publish' ? 'selected' : '' }}>Publish</option>
+                                    </select>
+                                    @if ($isThis)
+                                        @error('status')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- Isi berita --}}
+                            <div class="form-group">
+                                <label>Isi</label>
+                                <textarea name="isi" rows="5"
+                                          class="form-control {{ $isThis && $errors->has('isi') ? 'is-invalid' : '' }}">{{ $isThis ? old('isi') : $berita->isi }}</textarea>
+                                @if ($isThis)
+                                    @error('isi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                @endif
+                            </div>
+
+                            {{-- Gambar: tampilkan yang lama, upload baru bersifat opsional --}}
+                            <div class="form-group">
+                                <label>Gambar</label>
+                                @if ($berita->gambar)
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $berita->gambar) }}" alt="Gambar"
+                                             style="width: 110px; height: 70px; border-radius: 8px; object-fit: cover;">
+                                    </div>
+                                @endif
+                                <input type="file" name="gambar" accept="image/*" class="form-control-file">
+                                <small class="text-muted">Maks. 2 MB. Kosongkan jika tidak diganti.</small>
+                                @if ($isThis)
+                                    @error('gambar')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
+                                @endif
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    </div>
+                    </form>
 
-                </form>
-
+                </div>
             </div>
         </div>
-    </div>
+
+    @endcan
 @endforeach
 
 
-{{-- MODAL TAMBAH BERITA --}}
+{{-- ===================== MODAL TAMBAH BERITA ===================== --}}
 @php $isTambah = old('_modal') === 'tambah'; @endphp
 
 <div class="modal fade" id="modalTambahBerita" tabindex="-1" role="dialog" aria-hidden="true">
@@ -382,7 +426,7 @@
 
                     <div class="form-group">
                         <label>Judul</label>
-                        <input type="text" name="judul" maxlength="50"
+                        <input type="text" name="judul" maxlength="150"
                                class="form-control {{ $isTambah && $errors->has('judul') ? 'is-invalid' : '' }}"
                                value="{{ $isTambah ? old('judul') : '' }}" required>
                         @if ($isTambah)
@@ -395,6 +439,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Tanggal</label>
+                            {{-- Default: hari ini --}}
                             <input type="date" name="tanggal"
                                    class="form-control {{ $isTambah && $errors->has('tanggal') ? 'is-invalid' : '' }}"
                                    value="{{ $isTambah ? old('tanggal') : date('Y-m-d') }}">
@@ -407,6 +452,7 @@
 
                         <div class="form-group col-md-6">
                             <label>Status</label>
+                            {{-- Default: Draft, kecuali sebelumnya dipilih Publish lalu validasi gagal --}}
                             <select name="status"
                                     class="form-control {{ $isTambah && $errors->has('status') ? 'is-invalid' : '' }}" required>
                                 <option value="Draft" {{ $isTambah && old('status') === 'Publish' ? '' : 'selected' }}>Draft</option>
@@ -456,16 +502,18 @@
 </div>
 
 
-{{-- BUKA ULANG MODAL JIKA VALIDASI GAGAL --}}
+{{-- ===================== BUKA ULANG MODAL JIKA VALIDASI GAGAL =====================
+     Membaca penanda _modal / _berita_id yang dikirim form, lalu membuka modal
+     yang sesuai supaya pesan error terlihat. --}}
 @if ($errors->any())
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var modalTambah = '{{ old("_modal") }}';
-            var beritaId = '{{ old("_berita_id") }}';
+            var modalType = '{{ old("_modal") }}';
+            var beritaId  = '{{ old("_berita_id") }}';
 
-            if (modalTambah === 'tambah') {
+            if (modalType === 'tambah') {
                 $('#modalTambahBerita').modal('show');
-            } else if (modalTambah === 'edit' && beritaId) {
+            } else if (modalType === 'edit' && beritaId) {
                 $('#modalEditBerita' + beritaId).modal('show');
             }
         });
