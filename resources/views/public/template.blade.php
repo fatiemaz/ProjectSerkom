@@ -7,13 +7,12 @@
     <title>@yield('title', $profilGlobal->nama_sekolah ?? 'SMPN 1 Mangunreja')</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo.png') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="preload" href="{{ asset('assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap-icons/bootstrap-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/aos-master/dist/aos.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body>
 
@@ -112,38 +111,6 @@
     <script src="{{ asset('assets/fontawesome/js/all.min.js') }}"></script>
     <script src="{{ asset('assets/aos-master/dist/aos.js') }}"></script>
     <script>
-        // Animasi hitung angka statistik
-        document.querySelectorAll('[data-count]').forEach(function (el) {
-            var end = parseInt(el.dataset.count) || 0;
-            if (!end) return;
-            el.textContent = '0';
-            var io = new IntersectionObserver(function (entries) {
-                entries.forEach(function (e) {
-                    if (!e.isIntersecting) return;
-                    io.disconnect();
-                    var start = null, dur = 1400;
-                    function step(t) {
-                        start = start || t;
-                        var p = Math.min((t - start) / dur, 1);
-                        el.textContent = Math.floor(end * (1 - Math.pow(1 - p, 3)));
-                        if (p < 1) requestAnimationFrame(step); else el.textContent = end;
-                    }
-                    requestAnimationFrame(step);
-                });
-            }, { threshold: .4 });
-            io.observe(el);
-        });
-
-        // flip card fasilitas
-        document.querySelectorAll('.flip').forEach(function (card) {
-            function toggle() { card.classList.toggle('is-flipped'); }
-            card.addEventListener('click', toggle);
-            card.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
-            });
-        });
-
-        //aos
         AOS.init({
             duration: 700,
             once: true,
