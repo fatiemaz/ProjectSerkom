@@ -11,7 +11,7 @@
             <source src="{{ asset('storage/' . $profil->video) }}" type="video/mp4">
         </video>
     @endif
-    <div class="container" data-aos="fade-right">
+    <div class="container">
         <div class="row">
             <div class="col-lg-7">
                 <span class="eyebrow light">Selamat Datang di {{ $profil->nama_sekolah ?? 'SMPN 1 Mangunreja' }}</span>
@@ -32,7 +32,7 @@
         <div class="row g-4">
             <div class="col-6 col-lg-3"><div class="stat-item"><div class="stat-num" data-count="{{ $stats['siswa'] ?? 0 }}">{{ $stats['siswa'] ?? 0 }}</div><div class="stat-label">Siswa Aktif</div></div></div>
             <div class="col-6 col-lg-3"><div class="stat-item"><div class="stat-num" data-count="{{ $stats['guru'] ?? 0 }}">{{ $stats['guru'] ?? 0 }}</div><div class="stat-label">Guru &amp; Staf</div></div></div>
-            <div class="col-6 col-lg-3"><div class="stat-item"><div class="stat-num" data-count="{{ $stats['prestasi'] ?? 0 }}">{{ $stats['prestasi'] ?? 0 }}</div><div class="stat-label">Prestasi Diraih</div></div></div>
+            <div class="col-6 col-lg-3"><div class="stat-item"><div class="stat-num" data-count="{{ $stats['prestasi'] ?? 0 }}">{{ $stats['prestasi'] ?? 0 }}</div><div class="stat-label">Prestasi</div></div></div>
             <div class="col-6 col-lg-3"><div class="stat-item"><div class="stat-num" data-count="{{ $stats['ekskul'] ?? 0 }}">{{ $stats['ekskul'] ?? 0 }}</div><div class="stat-label">Ekstrakurikuler</div></div></div>
         </div>
     </div>
@@ -65,7 +65,7 @@
     </div>
 </section>
 
-{{-- FASILITAS (kartu bisa dibalik) --}}
+{{-- FASILITAS --}}
 @if ($fasilitas->isNotEmpty())
     <section class="sec">
         <div class="container" data-aos="fade-up">

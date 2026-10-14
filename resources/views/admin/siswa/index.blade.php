@@ -154,6 +154,7 @@
                             <th>NISN</th>
                             <th>Nama Siswa</th>
                             <th>Jenis Kelamin</th>
+                            <th>Kelas</th>
                             <th>Tahun Masuk</th>
                             @if ($isAdmin)
                                 <th class="text-center" style="width: 130px;">Aksi</th>
@@ -175,6 +176,15 @@
                                         <span class="badge badge-info">Laki-Laki</span>
                                     @elseif ($siswa->jenis_kelamin === 'Perempuan')
                                         <span class="badge badge-danger">Perempuan</span>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                {{-- kelas --}}
+                                <td>
+                                    @if ($siswa->kelas)
+                                        <span class="badge badge-primary">{{ $siswa->kelas->nama_kelas }}</span>
                                     @else
                                         -
                                     @endif
@@ -215,7 +225,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ $isAdmin ? 6 : 5 }}" class="text-center py-5">
+                                {{-- KELAS: colspan naik 1 karena ada kolom baru --}}
+                                <td colspan="{{ $isAdmin ? 7 : 6 }}" class="text-center py-5">
                                     <div class="mb-2">
                                         <i class="feather icon-users"
                                            style="font-size: 40px; color: #c8c8c8;"></i>
@@ -309,6 +320,26 @@
                             @endif
                         </div>
 
+                        {{-- KELAS: pilih kelas (wajib). Kelas siswa saat ini otomatis terpilih. --}}
+                        <div class="form-group">
+                            <label>Kelas</label>
+                            @php $kelasPilih = $isThis ? old('id_kelas') : $siswa->id_kelas; @endphp
+                            <select name="id_kelas" required
+                                    class="form-control {{ $isThis && $errors->has('id_kelas') ? 'is-invalid' : '' }}">
+                                <option value="" disabled {{ $kelasPilih ? '' : 'selected' }}>-- Pilih Kelas --</option>
+                                @foreach ($daftarKelas as $k)
+                                    <option value="{{ $k->id_kelas }}" {{ $kelasPilih === $k->id_kelas ? 'selected' : '' }}>
+                                        {{ $k->nama_kelas }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if ($isThis)
+                                @error('id_kelas')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            @endif
+                        </div>
+
                         <div class="form-group">
                             <label>Tahun Masuk</label>
                             <input type="number" name="tahun_masuk" min="1900" max="{{ date('Y') }}"
@@ -356,6 +387,14 @@
 
                 <div class="modal-body">
 
+                    {{-- KELAS: peringatan jika belum ada kelas sama sekali --}}
+                    @if ($daftarKelas->isEmpty())
+                        <div class="alert alert-warning">
+                            Belum ada kelas. Buat kelas terlebih dahulu di menu
+                            <a href="{{ route('kelas.index') }}" class="alert-link">Kelas</a>.
+                        </div>
+                    @endif
+
                     <div class="form-group">
                         <label>NISN</label>
                         <input type="text" name="nisn" maxlength="10"
@@ -395,6 +434,25 @@
                         @endif
                     </div>
 
+                    {{-- KELAS: pilih kelas (wajib) --}}
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <select name="id_kelas" required
+                                class="form-control {{ $isTambah && $errors->has('id_kelas') ? 'is-invalid' : '' }}">
+                            <option value="" disabled {{ $isTambah && old('id_kelas') ? '' : 'selected' }}>-- Pilih Kelas --</option>
+                            @foreach ($daftarKelas as $k)
+                                <option value="{{ $k->id_kelas }}" {{ $isTambah && old('id_kelas') === $k->id_kelas ? 'selected' : '' }}>
+                                    {{ $k->nama_kelas }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @if ($isTambah)
+                            @error('id_kelas')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        @endif
+                    </div>
+
                     <div class="form-group">
                         <label>Tahun Masuk</label>
                         <input type="number" name="tahun_masuk" min="1900" max="{{ date('Y') }}"
@@ -411,7 +469,8 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    {{-- KELAS: tombol simpan nonaktif jika belum ada kelas --}}
+                    <button type="submit" class="btn btn-primary" {{ $daftarKelas->isEmpty() ? 'disabled' : '' }}>Simpan</button>
                 </div>
 
             </form>

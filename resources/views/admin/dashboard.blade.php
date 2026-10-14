@@ -5,7 +5,7 @@
 @php
     $isAdmin = Auth::user()->role === 'Admin';
 
-    // [label, nilai, ikon, warna, tampil?]
+    //  label, nilai, ikon
     $stats = [
         ['Total Siswa',          $totalSiswa,       'users',      '#7267ef', '114, 103, 239', true],
         ['Total Guru',           $totalGuru,        'user-check', '#00bcd4', '0, 188, 212',   true],
@@ -17,19 +17,6 @@
     ];
 @endphp
 
-<style>
-    .wave {
-        display: inline-block;
-        transform-origin: 70% 70%;
-        animation: wave 2s infinite;
-    }
-    @keyframes wave {
-        0%, 60%, 100% { transform: rotate(0deg); }
-        10%, 30%      { transform: rotate(14deg); }
-        20%, 40%      { transform: rotate(-8deg); }
-        50%           { transform: rotate(10deg); }
-    }
-</style>
 
 <div class="container-fluid flex-grow-1 container-p-y">
 

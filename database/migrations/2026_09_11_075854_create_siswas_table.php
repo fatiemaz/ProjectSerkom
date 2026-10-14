@@ -17,7 +17,14 @@ return new class extends Migration
             $table->string('nama_siswa', 40);
             $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan'])->nullable();
             $table->year('tahun_masuk')->nullable();
+            $table->uuid('id_kelas');
             $table->timestamps();
+
+            $table->foreign('id_kelas')
+                ->references('id_kelas')
+                ->on('kelas')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
         });
     }
 

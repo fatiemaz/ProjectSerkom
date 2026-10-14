@@ -37,9 +37,11 @@
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.prestasi*') ? 'active' : '' }}" href="{{ route('public.prestasi') }}">Prestasi</a></li>
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.ekskul*') ? 'active' : '' }}" href="{{ route('public.ekskul') }}">Ekstrakurikuler</a></li>
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.guru*') ? 'active' : '' }}" href="{{ route('public.guru') }}">Guru &amp; Staf</a></li>
+                        <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.siswa*') ? 'active' : '' }}"href="{{ route('public.siswa') }}">Siswa</a></li>
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.berita*') ? 'active' : '' }}" href="{{ route('public.berita') }}">Berita</a></li>
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.pengumuman*') ? 'active' : '' }}" href="{{ route('public.pengumuman') }}">Pengumuman</a></li>
                         <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.galeri*') ? 'active' : '' }}" href="{{ route('public.galeri') }}">Galeri</a></li>
+                        <li class="nav-item"><a class="nav-link {{ request()->routeIs('public.profile_pribadi*') ? 'active' : '' }}" href="{{ route('public.profile_pribadi') }}">Profile Pribadi</a></li>
                     </ul>
                 </div>
             </div>

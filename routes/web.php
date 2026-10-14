@@ -14,6 +14,7 @@ use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\FasilitasController;
 
 
@@ -32,7 +33,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/info/ekstrakurikuler/{ekstrakurikuler}', [PublicController::class, 'ekskulShow'])->name('public.ekskul.show');
     Route::get('/info/guru/{guru}', [PublicController::class, 'guruShow'])->name('public.guru.show');
     Route::get('/info/galeri/{galeri}', [PublicController::class, 'galeriShow'])->name('public.galeri.show');
+    Route::view('/profile-pribadi', 'public.profile_pribadi.index')->name('public.profile_pribadi');
 
+    Route::get('/info/siswa', [PublicController::class, 'siswa'])->name('public.siswa');
+    Route::get('/info/siswa/{id}', [PublicController::class, 'siswaShow'])->name('public.siswa.show');
     Route::get('/info/guru', [PublicController::class, 'guru'])->name('public.guru');
     Route::get('/info/galeri', [PublicController::class, 'galeri'])->name('public.galeri');
     Route::get('/info/profil', [PublicController::class, 'profil'])->name('public.profil');
@@ -69,6 +73,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('prestasi', PrestasiController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('fasilitas', FasilitasController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('kelas', KelasController::class)->parameters(['kelas' => 'kelas'])->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/profil-pribadi', [ProfileController::class, 'edit'])->name('profil.pribadi');
 
     Route::resource('pengumuman', PengumumanController::class)->only(['index', 'store', 'update', 'destroy']);
 

@@ -77,6 +77,13 @@
                         </a>
                     </li>
 
+                    <li class="sidenav-item {{ request()->routeIs('kelas.*') ? 'active' : '' }}">
+                        <a href="{{ route('kelas.index') }}" class="sidenav-link">
+                            <i class="sidenav-icon feather icon-home"></i>
+                            <div>Kelas</div>
+                        </a>
+                    </li>
+
                     <li class="sidenav-item {{ request()->routeIs('prestasi.*') ? 'active' : '' }}">
                         <a href="{{ route('prestasi.index') }}" class="sidenav-link">
                             <i class="sidenav-icon feather icon-award"></i>

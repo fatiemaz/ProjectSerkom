@@ -143,4 +143,58 @@ class PublicController extends Controller
         $galeriLain = Galeri::where((new Galeri)->getKeyName(), '!=', $id)->latest()->take(6)->get();
         return view('public.galeri.show', compact('galeri', 'galeriLain'));
     }
+
+    // ===================== SISWA (BARU) =====================
+
+    /**
+     * Daftar siswa dengan pencarian (nama / NISN) dan filter jenis kelamin & angkatan.
+     */
+    public function siswa(Request $request)
+    {
+        $siswas = Siswa::query()
+            ->with('kelas') // ambil data kelas sekaligus (hindari N+1)
+            // Cari berdasarkan nama atau NISN
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('nama_siswa', 'like', "%{$search}%")
+                      ->orWhere('nisn', 'like', "%{$search}%");
+                });
+            })
+            // Filter jenis kelamin
+            ->when($request->filled('jenis_kelamin'), function ($query) use ($request) {
+                $query->where('jenis_kelamin', $request->jenis_kelamin);
+            })
+            // Filter tahun masuk (angkatan)
+            ->when($request->filled('tahun_masuk'), function ($query) use ($request) {
+                $query->where('tahun_masuk', $request->tahun_masuk);
+            })
+            ->orderBy('nama_siswa')
+            ->paginate(12)
+            ->withQueryString(); // filter tetap terbawa saat pindah halaman
+
+        // Daftar tahun masuk untuk dropdown filter
+        $daftarTahun = Siswa::whereNotNull('tahun_masuk')
+            ->distinct()
+            ->orderByDesc('tahun_masuk')
+            ->pluck('tahun_masuk');
+
+        $totalSiswa = Siswa::count();
+
+        return view('public.siswa.index', compact('siswas', 'daftarTahun', 'totalSiswa'));
+    }
+
+    /**
+     * Detail satu siswa (pola sama seperti guruShow / ekskulShow).
+     */
+    public function siswaShow($id)
+    {
+        $siswa = Siswa::with('kelas')->where((new Siswa)->getKeyName(), $id)->firstOrFail();
+        return view('public.siswa.show', compact('siswa'));
+    }
+
+    public function profilePribadi()
+    {
+        return view('public.profile_pribadi');
+    }
 }

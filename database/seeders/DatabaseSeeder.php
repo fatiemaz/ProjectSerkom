@@ -48,6 +48,8 @@ class DatabaseSeeder extends Seeder
             GaleriSeeder::class,
             EkstrakurikulerSeeder::class,
             PrestasiSeeder::class,
+            FasilitasSeeder::class,
+            KelasSeeder::class,
         ]);
     }
 }
